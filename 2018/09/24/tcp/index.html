@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="简单的tcp实例" />
+<meta property="og:description" content="tcp服务器 开启对服务器ip以及端口的监听
+lis, err := net.Listen(&quot;tcp&quot;, &quot;:6666&quot;) if err != nil { log.Fatalf(&quot;failed to listen:%v&quot;, err) }  用for循环从监听者处取发起拨号的连接
+for { conn, err := lis.Accept() if err != nil { log.Fatalf(&quot;failed to accept:%v&quot;, err) continue } sendMessage(conn) time.Sleep(time.Second * 1) }  写两个函数用来收发消息
+发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送
+func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&quot;failed to write:%v&quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
+func recv(){ b := make([]byte,1024) _,err := conn." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://edcismybrother.github.io/2018/09/24/tcp/" />
+
+
+
+<meta property="article:published_time" content="2018-09-24T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2018-09-24T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="简单的tcp实例"/>
+<meta name="twitter:description" content="tcp服务器 开启对服务器ip以及端口的监听
+lis, err := net.Listen(&quot;tcp&quot;, &quot;:6666&quot;) if err != nil { log.Fatalf(&quot;failed to listen:%v&quot;, err) }  用for循环从监听者处取发起拨号的连接
+for { conn, err := lis.Accept() if err != nil { log.Fatalf(&quot;failed to accept:%v&quot;, err) continue } sendMessage(conn) time.Sleep(time.Second * 1) }  写两个函数用来收发消息
+发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送
+func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&quot;failed to write:%v&quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
+func recv(){ b := make([]byte,1024) _,err := conn."/>
+
+
+
+    <link rel="canonical" href="http://edcismybrother.github.io/2018/09/24/tcp/">
+
+    <title>
+      
+        简单的tcp实例 | 皮智文的小宝库
+      
+    </title>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
+
+    
+
+    
+
+    
+  </head>
+  <body>
+    
+      <header class="blog-header">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            皮智文的小宝库
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                
+            </ul>
+            
+        </div>
+    </nav>
+</header>
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8 blog-main">
+
+          
+
+<header>
+    <h2 class="blog-post-title">
+        <a class="text-dark" href="/2018/09/24/tcp/">简单的tcp实例</a>
+    </h2>
+    
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 24, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+    
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+    
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+    
+        <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+    
+</div>
+
+    
+    <hr>
+</header>
+<article class="blog-post">
+    
+
+<h1 id="tcp服务器">tcp服务器</h1>
+
+<p>开启对服务器ip以及端口的监听</p>
+
+<pre><code>lis, err := net.Listen(&quot;tcp&quot;, &quot;:6666&quot;)
+if err != nil {
+    log.Fatalf(&quot;failed to listen:%v&quot;, err)
+}
+</code></pre>
+
+<p>用for循环从监听者处取发起拨号的连接</p>
+
+<pre><code>for {
+    conn, err := lis.Accept()
+    if err != nil {
+        log.Fatalf(&quot;failed to accept:%v&quot;, err)
+        continue
+    }
+    sendMessage(conn)
+    time.Sleep(time.Second * 1)
+}
+</code></pre>
+
+<p>写两个函数用来收发消息</p>
+
+<p>发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送</p>
+
+<pre><code>func send(){
+    _,err := conn.Write([]byte(str))
+    if err != nil {
+        log.Fatalf(&quot;failed to write:%v&quot;, err)
+    }
+}
+</code></pre>
+
+<p>收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息</p>
+
+<pre><code>func recv(){
+    b := make([]byte,1024)
+    _,err := conn.Read(b)
+     if err != nil {
+        log.Fatalf(&quot;failed to read:%v&quot;, err)
+    }
+}
+</code></pre>
+
+<h1 id="tcp客户端">tcp客户端</h1>
+
+<p>向相关服务器进行拨号操作</p>
+
+<pre><code>conn, err := net.Dial(&quot;tcp&quot;, &quot;127.0.0.1:8080&quot;)
+if err != nil {
+    log.Fatalf(&quot;failed to dial,err:%v&quot;,err)
+}
+</code></pre>
+
+<p>拨号成功后就可以进行相应的收发操作了，函数同服务器一样</p>
+
+<p>单独开启一个携程goroutine,用来循环接受消息<code>go Recv()</code></p>
+
+<p>此时Recv()函数需要增加一个for用来循环接受</p>
+
+<pre><code>func Recv(){
+    for{
+        b := make([]byte,1024)
+        _,err := conn.Read(b)
+        if err != nil {
+            log.Fatalf(&quot;failed to read:%v&quot;, err)
+        }
+        dosomething(...)
+    }
+}
+</code></pre>
+
+<p>一个简单的<code>tcp</code>demo就完成了</p>
+
+
+    
+
+    
+
+    <h4>See also</h4>
+    <ul>
+        
+            <li><a href="/2018/09/24/markdown/">markdown</a></li>
+        
+            <li><a href="/2018/09/24/submodule/">submodule</a></li>
+        
+    </ul>
+
+
+</article>
+
+
+
+        </div>
+
+        <aside class="col-12 col-lg-3 ml-auto blog-sidebar">
+    
+        
+
+
+<section>
+    <h4>Recent Posts</h4>
+    <ol class="list-unstyled">
+        
+        <li>
+            <a href="/2018/09/24/tcp/">简单的tcp实例</a>
+        </li>
+        
+        <li>
+            <a href="/2018/09/24/markdown/">markdown</a>
+        </li>
+        
+        <li>
+            <a href="/2018/09/24/submodule/">submodule</a>
+        </li>
+        
+        <li>
+            <a href="/post/">Posts</a>
+        </li>
+        
+    </ol>
+</section>
+
+    
+    
+        <section>
+    
+        
+    
+        
+        <h4>Tags</h4>
+        <p>
+            
+            <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/submodule">submodule</a>
+            
+            <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+        </p>
+        
+    
+</section>
+    
+</aside>
+
+      </div>
+    </div>
+    
+
+    
+      
+
+
+
+
+
+
+<footer class="blog-footer w-100">
+    <nav class="navbar navbar-light bg-light">
+        <p class="w-100 text-center">Hugo template made with ❤ by <a href="https://github.com/Xzya">Xzya</a>, inspired by <a href="https://github.com/alanorth/hugo-theme-bootstrap4-blog">hugo-theme-bootstrap4-blog</a></p>
+        <p class="w-100 text-center"><a href="#">Back to top</a></p>
+    </nav>
+</footer>
+
+    
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>

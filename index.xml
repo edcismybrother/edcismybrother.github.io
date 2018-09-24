@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ananke: a Hugo Theme on My New Hugo Site</title>
+    <title>皮智文的小宝库</title>
     <link>http://edcismybrother.github.io/</link>
-    <description>Recent content in Ananke: a Hugo Theme on My New Hugo Site</description>
+    <description>Recent content on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Thu, 20 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>markdown 语法学习</title>
-      <link>http://edcismybrother.github.io/markdown/markdown/</link>
+      <title>简单的tcp实例</title>
+      <link>http://edcismybrother.github.io/2018/09/24/tcp/</link>
+      <pubDate>Mon, 24 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/2018/09/24/tcp/</guid>
+      <description>tcp服务器 开启对服务器ip以及端口的监听
+lis, err := net.Listen(&amp;quot;tcp&amp;quot;, &amp;quot;:6666&amp;quot;) if err != nil { log.Fatalf(&amp;quot;failed to listen:%v&amp;quot;, err) }  用for循环从监听者处取发起拨号的连接
+for { conn, err := lis.Accept() if err != nil { log.Fatalf(&amp;quot;failed to accept:%v&amp;quot;, err) continue } sendMessage(conn) time.Sleep(time.Second * 1) }  写两个函数用来收发消息
+发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送
+func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&amp;quot;failed to write:%v&amp;quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
+func recv(){ b := make([]byte,1024) _,err := conn.</description>
+    </item>
+    
+    <item>
+      <title>markdown</title>
+      <link>http://edcismybrother.github.io/2018/09/24/markdown/</link>
       <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/markdown/markdown/</guid>
+      <guid>http://edcismybrother.github.io/2018/09/24/markdown/</guid>
       <description> 英文学习链接 中文学习链接 </description>
     </item>
     
     <item>
-      <title>submodule学习</title>
-      <link>http://edcismybrother.github.io/submodule/submodule/</link>
+      <title>submodule</title>
+      <link>http://edcismybrother.github.io/2018/09/24/submodule/</link>
       <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/submodule/submodule/</guid>
-      <description> submodule常用命令  1、新增：在当前库中没有submodule子模块，可以通过 git submodule add remote 添加子模块 2、删除：  git rm -fr submodule 删除`./git/config`文件中的相关submodule 删除`./git/submodule`中相关的子模块   3、新环境中拉取有子模块的库：  初始化`git submodule init` 更新`git submodule update`  相关网页  </description>
+      <guid>http://edcismybrother.github.io/2018/09/24/submodule/</guid>
+      <description> submodule常用命令  新增：在当前库中没有submodule子模块，可以通过 git submodule add remote 添加子模块 删除：
+git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `./git/submodule` 中相关的子模块  新环境中拉取有子模块的库：
+初始化`git submodule init` 更新`git submodule update`  相关网页
+  </description>
     </item>
     
   </channel>
