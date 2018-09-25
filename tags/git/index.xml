@@ -18,8 +18,11 @@
       
       <guid>http://edcismybrother.github.io/2018/09/24/submodule/</guid>
       <description> submodule常用命令  新增：在当前库中没有submodule子模块，可以通过 git submodule add remote 添加子模块 删除：
-git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `./git/submodule` 中相关的子模块  新环境中拉取有子模块的库：
-初始化`git submodule init` 更新`git submodule update`  相关网页
+git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `./git/submodule` 中相关的子模块  新环境中拉取库中的子模块：
+初始化`git submodule init` 更新`git submodule update`  拉取所有子模块的最新代码
+git submodule foreach &amp;ndash;recursive git pull origin master
+ git submodule update检出项目的指定版本（HEAD），并不指向一个分支。头指针和分支未绑定，是分离状态。 需要强制绑定
+git branch -f master HEAD git checkout master  相关网页
   </description>
     </item>
     

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.43-DEV" />
+	<meta name="generator" content="Hugo 0.48" />
     <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,20 +10,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/" />
-
-
-
-<meta property="og:updated_time" content="2018-09-24T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta property="og:updated_time" content="2018-09-25T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="皮智文的小宝库"/>
 <meta name="twitter:description" content=""/>
@@ -82,6 +69,45 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/2018/09/25/xorm/">xorm基本操作</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 25, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+    
+        <a class="badge badge-primary" href="/tags/db">db</a>
+    
+</div>
+
+        
+    </header>
+     学习链接 
+    
+</article>
+
+
+    
 
 
 
@@ -208,8 +234,11 @@ func recv(){ b := make([]byte,1024) _,err := conn.
         
     </header>
      submodule常用命令  新增：在当前库中没有submodule子模块，可以通过 git submodule add remote 添加子模块 删除：
-git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `./git/submodule` 中相关的子模块  新环境中拉取有子模块的库：
-初始化`git submodule init` 更新`git submodule update`  相关网页
+git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `./git/submodule` 中相关的子模块  新环境中拉取库中的子模块：
+初始化`git submodule init` 更新`git submodule update`  拉取所有子模块的最新代码
+git submodule foreach &ndash;recursive git pull origin master
+ git submodule update检出项目的指定版本（HEAD），并不指向一个分支。头指针和分支未绑定，是分离状态。 需要强制绑定
+git branch -f master HEAD git checkout master  相关网页
   
     
 </article>
@@ -234,6 +263,10 @@ git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `.
 <section>
     <h4>Recent Posts</h4>
     <ol class="list-unstyled">
+        
+        <li>
+            <a href="/2018/09/25/xorm/">xorm基本操作</a>
+        </li>
         
         <li>
             <a href="/2018/09/24/tcp/">简单的tcp实例</a>
@@ -264,6 +297,8 @@ git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `.
         <h4>Tags</h4>
         <p>
             
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
             <a class="badge badge-primary" href="/tags/git">git</a>
             
             <a class="badge badge-primary" href="/tags/markdown">markdown</a>
@@ -277,6 +312,8 @@ git rm -fr submodule 删除 `./git/config` 文件中的相关submodule 删除 `.
             <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
             
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
             
         </p>
         

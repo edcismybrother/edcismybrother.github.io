@@ -6,10 +6,19 @@
     <description>Recent content in Tags on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Thu, 20 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Db</title>
+      <link>http://edcismybrother.github.io/tags/db/</link>
+      <pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/tags/db/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Git</title>
@@ -71,6 +80,15 @@
       <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>http://edcismybrother.github.io/tags/%E8%AF%AD%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>资料</title>
+      <link>http://edcismybrother.github.io/tags/%E8%B5%84%E6%96%99/</link>
+      <pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/tags/%E8%B5%84%E6%96%99/</guid>
       <description></description>
     </item>
     

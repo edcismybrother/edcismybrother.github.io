@@ -13,24 +13,8 @@ for { conn, err := lis.Accept() if err != nil { log.Fatalf(&quot;failed to accep
 func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&quot;failed to write:%v&quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
 func recv(){ b := make([]byte,1024) _,err := conn." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://edcismybrother.github.io/2018/09/24/tcp/" />
-
-
-
-<meta property="article:published_time" content="2018-09-24T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="http://edcismybrother.github.io/2018/09/24/tcp/" /><meta property="article:published_time" content="2018-09-24T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2018-09-24T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="简单的tcp实例"/>
 <meta name="twitter:description" content="tcp服务器 开启对服务器ip以及端口的监听
@@ -231,6 +215,10 @@ if err != nil {
     <ol class="list-unstyled">
         
         <li>
+            <a href="/2018/09/25/xorm/">xorm基本操作</a>
+        </li>
+        
+        <li>
             <a href="/2018/09/24/tcp/">简单的tcp实例</a>
         </li>
         
@@ -259,6 +247,8 @@ if err != nil {
         <h4>Tags</h4>
         <p>
             
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
             <a class="badge badge-primary" href="/tags/git">git</a>
             
             <a class="badge badge-primary" href="/tags/markdown">markdown</a>
@@ -272,6 +262,8 @@ if err != nil {
             <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
             
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
             
         </p>
         
