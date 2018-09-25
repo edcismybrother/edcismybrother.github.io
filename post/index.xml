@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>aes加密</title>
+      <link>http://edcismybrother.github.io/2018/09/25/aes/</link>
+      <pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/2018/09/25/aes/</guid>
+      <description>aes加密详解</description>
+    </item>
+    
+    <item>
       <title>xorm基本操作</title>
       <link>http://edcismybrother.github.io/2018/09/25/xorm/</link>
       <pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate>
