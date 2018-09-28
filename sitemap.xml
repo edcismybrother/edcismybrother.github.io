@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://edcismybrother.github.io/post/2018-09-28-dep/</loc>
+    <lastmod>2018-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://edcismybrother.github.io/2018/09/25/aes/</loc>
     <lastmod>2018-09-25T00:00:00+00:00</lastmod>
   </url>
@@ -58,7 +63,7 @@
   
   <url>
     <loc>http://edcismybrother.github.io/post/</loc>
-    <lastmod>2018-09-25T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -87,6 +92,12 @@
   </url>
   
   <url>
+    <loc>http://edcismybrother.github.io/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2018-09-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://edcismybrother.github.io/tags/%E5%8A%A0%E5%AF%86/</loc>
     <lastmod>2018-09-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -100,7 +111,7 @@
   
   <url>
     <loc>http://edcismybrother.github.io/</loc>
-    <lastmod>2018-09-25T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

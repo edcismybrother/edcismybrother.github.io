@@ -10,7 +10,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/" />
-<meta property="og:updated_time" content="2018-09-25T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-09-28T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="皮智文的小宝库"/>
 <meta name="twitter:description" content=""/>
@@ -69,6 +69,51 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/post/2018-09-28-dep/">dep依赖管理</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 28, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+    
+</div>
+
+        
+    </header>
+     安装dep  go get -u github.com/golang/dep/cmd/dep
+ dep基本使用  dep init 执行这个命令会将当前目录下所有文件import的第三方工具进行打包
+ 这个建议加上-v ,可以看日志
+init是从网络上去下载对应的中间件，包很多的话，下载会非常慢
+ dep init -gopath 会先去本地找对应的包，没有的话，再去网络上下载
+dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
+ Gopkg.toml配置小结:
+[[constraint]] name = &quot;github.com/panjf2000/ants&quot; version = &quot;=3.6.0&quot;  上述引用为例子:
+&quot;3.6.0&quot; 约束使用 3.6.0 - 3.7.0 之间的最新版 &quot;&lt;=3.6.0&quot; 约束使用最高版本为 3.6.0 &quot;=3.6.0&quot; 约束指定为3.6.0  
+    
+</article>
+
+
+    
 
 
 
@@ -304,6 +349,10 @@ git branch -f master HEAD git checkout master  相关网页
     <ol class="list-unstyled">
         
         <li>
+            <a href="/post/2018-09-28-dep/">dep依赖管理</a>
+        </li>
+        
+        <li>
             <a href="/2018/09/25/aes/">aes加密</a>
         </li>
         
@@ -317,10 +366,6 @@ git branch -f master HEAD git checkout master  相关网页
         
         <li>
             <a href="/2018/09/24/markdown/">markdown</a>
-        </li>
-        
-        <li>
-            <a href="/2018/09/24/submodule/">submodule</a>
         </li>
         
     </ol>
@@ -349,6 +394,8 @@ git branch -f master HEAD git checkout master  相关网页
             <a class="badge badge-primary" href="/tags/tcp">tcp</a>
             
             <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
             
             <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
             
