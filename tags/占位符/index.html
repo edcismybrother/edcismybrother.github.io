@@ -5,22 +5,22 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="依赖管理" />
+<meta property="og:title" content="占位符" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://edcismybrother.github.io/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/" />
-<meta property="og:updated_time" content="2018-09-28T00:00:00&#43;00:00"/>
+<meta property="og:url" content="http://edcismybrother.github.io/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6/" />
+<meta property="og:updated_time" content="2018-09-29T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="依赖管理"/>
+<meta name="twitter:title" content="占位符"/>
 <meta name="twitter:description" content=""/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">
+    <link rel="canonical" href="http://edcismybrother.github.io/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">
 
     <title>
       
-        依赖管理 | 皮智文的小宝库
+        占位符 | 皮智文的小宝库
       
     </title>
 
@@ -30,7 +30,7 @@
     <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
 
     
-    <link href="http://edcismybrother.github.io/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
+    <link href="http://edcismybrother.github.io/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
     
 
     
@@ -75,14 +75,14 @@
         <article class="blog-post">
     <header>
         <h2 class="blog-post-title">
-            <a class="text-dark" href="/post/2018-09-28-dep/">dep依赖管理</a>
+            <a class="text-dark" href="/post/2018-09-29-fmt/">占位符</a>
         </h2>
         
 
 
 <div class="blog-post-date text-secondary">
     
-        Sep 28, 2018
+        Sep 29, 2018
     
     
         by <span rel="author">皮智文</span>
@@ -93,21 +93,16 @@
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+        <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
     
 </div>
 
         
     </header>
-     安装dep  go get -u github.com/golang/dep/cmd/dep
- dep基本使用  dep init 执行这个命令会将当前目录下所有文件import的第三方工具进行打包
- 这个建议加上-v ,可以看日志
-init是从网络上去下载对应的中间件，包很多的话，下载会非常慢
- dep init -gopath 会先去本地找对应的包，没有的话，再去网络上下载
-dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
- Gopkg.toml配置小结:
-[[constraint]] name = &quot;github.com/panjf2000/ants&quot; version = &quot;=3.6.0&quot;  上述引用为例子:
-&quot;3.6.0&quot; 约束使用 3.6.0 - 3.7.0 之间的最新版 &quot;&lt;=3.6.0&quot; 约束使用最高版本为 3.6.0 &quot;=3.6.0&quot; 约束指定为3.6.0  
+    普通占位符 占位符 说明 举例 输出 %v 相应值的默认格式。 Printf(&quot;%v&quot;, people) {zhangsan}， %+v 打印结构体时，会添加字段名 Printf(&quot;%+v&quot;, people) {Name:zhangsan} %#v 相应值的Go语法表示 Printf(&quot;#v&quot;, people) main.Human{Name:&quot;zhangsan&quot;} %T 相应值的类型的Go语法表示 Printf(&quot;%T&quot;, people) main.Human %% 字面上的百分号，并非值的占位符 Printf(&quot;%%&quot;) %  布尔占位符 占位符 说明 举例 输出 %t true 或 false。 Printf(&quot;%t&quot;, true) true  整数占位符 占位符 说明 举例 输出 %b 二进制表示 Printf(&quot;%b&quot;, 5) 101 %c 相应Unicode码点所表示的字符 Printf(&quot;%c&quot;, 0x4E2D) 中 %d 十进制表示 Printf(&quot;%d&quot;, 0x12) 18 %o 八进制表示 Printf(&quot;%d&quot;, 10) 12 %q 单引号围绕的字符字面值，由Go语法安全地转义 Printf(&quot;%q&quot;, 0x4E2D) '中' %x 十六进制表示，字母形式为小写 a-f Printf(&quot;%x&quot;, 13) d %X 十六进制表示，字母形式为大写 A-F Printf(&quot;%x&quot;, 13) D %U Unicode格式：U+1234，等同于 &quot;U+%04X&quot; Printf(&quot;%U&quot;, 0x4E2D) U+4E2D  浮点数和复数的组成部分（实部和虚部） 占位符 说明 举例 输出 %b 无小数部分的，指数为二的幂的科学计数法， 与 strconv.
+    
+    <p></p>
+    <a href="/post/2018-09-29-fmt/">Read More →</a>
     
 </article>
 
