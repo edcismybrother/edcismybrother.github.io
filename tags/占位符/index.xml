@@ -13,10 +13,10 @@
     
     <item>
       <title>占位符</title>
-      <link>http://edcismybrother.github.io/post/2018-09-29-fmt/</link>
+      <link>http://edcismybrother.github.io/%E5%8D%A0%E4%BD%8D%E7%AC%A6/</link>
       <pubDate>Sat, 29 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/post/2018-09-29-fmt/</guid>
+      <guid>http://edcismybrother.github.io/%E5%8D%A0%E4%BD%8D%E7%AC%A6/</guid>
       <description>普通占位符 占位符 说明 举例 输出 %v 相应值的默认格式。 Printf(&amp;quot;%v&amp;quot;, people) {zhangsan}， %+v 打印结构体时，会添加字段名 Printf(&amp;quot;%+v&amp;quot;, people) {Name:zhangsan} %#v 相应值的Go语法表示 Printf(&amp;quot;#v&amp;quot;, people) main.Human{Name:&amp;quot;zhangsan&amp;quot;} %T 相应值的类型的Go语法表示 Printf(&amp;quot;%T&amp;quot;, people) main.Human %% 字面上的百分号，并非值的占位符 Printf(&amp;quot;%%&amp;quot;) %  布尔占位符 占位符 说明 举例 输出 %t true 或 false。 Printf(&amp;quot;%t&amp;quot;, true) true  整数占位符 占位符 说明 举例 输出 %b 二进制表示 Printf(&amp;quot;%b&amp;quot;, 5) 101 %c 相应Unicode码点所表示的字符 Printf(&amp;quot;%c&amp;quot;, 0x4E2D) 中 %d 十进制表示 Printf(&amp;quot;%d&amp;quot;, 0x12) 18 %o 八进制表示 Printf(&amp;quot;%d&amp;quot;, 10) 12 %q 单引号围绕的字符字面值，由Go语法安全地转义 Printf(&amp;quot;%q&amp;quot;, 0x4E2D) &#39;中&#39; %x 十六进制表示，字母形式为小写 a-f Printf(&amp;quot;%x&amp;quot;, 13) d %X 十六进制表示，字母形式为大写 A-F Printf(&amp;quot;%x&amp;quot;, 13) D %U Unicode格式：U+1234，等同于 &amp;quot;U+%04X&amp;quot; Printf(&amp;quot;%U&amp;quot;, 0x4E2D) U+4E2D  浮点数和复数的组成部分（实部和虚部） 占位符 说明 举例 输出 %b 无小数部分的，指数为二的幂的科学计数法， 与 strconv.</description>
     </item>
     

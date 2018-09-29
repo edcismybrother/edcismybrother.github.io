@@ -75,7 +75,7 @@
         <article class="blog-post">
     <header>
         <h2 class="blog-post-title">
-            <a class="text-dark" href="/post/2018-09-29-fmt/">占位符</a>
+            <a class="text-dark" href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
         </h2>
         
 
@@ -102,7 +102,7 @@
     普通占位符 占位符 说明 举例 输出 %v 相应值的默认格式。 Printf(&quot;%v&quot;, people) {zhangsan}， %+v 打印结构体时，会添加字段名 Printf(&quot;%+v&quot;, people) {Name:zhangsan} %#v 相应值的Go语法表示 Printf(&quot;#v&quot;, people) main.Human{Name:&quot;zhangsan&quot;} %T 相应值的类型的Go语法表示 Printf(&quot;%T&quot;, people) main.Human %% 字面上的百分号，并非值的占位符 Printf(&quot;%%&quot;) %  布尔占位符 占位符 说明 举例 输出 %t true 或 false。 Printf(&quot;%t&quot;, true) true  整数占位符 占位符 说明 举例 输出 %b 二进制表示 Printf(&quot;%b&quot;, 5) 101 %c 相应Unicode码点所表示的字符 Printf(&quot;%c&quot;, 0x4E2D) 中 %d 十进制表示 Printf(&quot;%d&quot;, 0x12) 18 %o 八进制表示 Printf(&quot;%d&quot;, 10) 12 %q 单引号围绕的字符字面值，由Go语法安全地转义 Printf(&quot;%q&quot;, 0x4E2D) '中' %x 十六进制表示，字母形式为小写 a-f Printf(&quot;%x&quot;, 13) d %X 十六进制表示，字母形式为大写 A-F Printf(&quot;%x&quot;, 13) D %U Unicode格式：U+1234，等同于 &quot;U+%04X&quot; Printf(&quot;%U&quot;, 0x4E2D) U+4E2D  浮点数和复数的组成部分（实部和虚部） 占位符 说明 举例 输出 %b 无小数部分的，指数为二的幂的科学计数法， 与 strconv.
     
     <p></p>
-    <a href="/post/2018-09-29-fmt/">Read More →</a>
+    <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">Read More →</a>
     
 </article>
 
@@ -115,7 +115,53 @@
         <article class="blog-post">
     <header>
         <h2 class="blog-post-title">
-            <a class="text-dark" href="/post/2018-09-28-dep/">dep依赖管理</a>
+            <a class="text-dark" href="/decimal/">进制学习</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 29, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+    
+</div>
+
+        
+    </header>
+    进制对应的英文 name 中文名 含义 举例（以十进制为标准，10的转换） binary 二进制 满2进1 1010 Octal 八进制 满8进1 12 Decimal 十进制 满10进1 10 Hex 十六进制 满16进1 a  进制转换在线工具
+golang中进制之间的相互转换 首先看看go自带的包  &ldquo;encoding/hex&rdquo; &ldquo;encoding/binary&rdquo;
+ 重点分析 2、10、16进制之间的相互转换
+hex 分析 func Encode(dst, src []byte) int { for i, v := range src { dst[i*2] = hextable[v&gt;&gt;4] dst[i*2+1] = hextable[v&amp;0x0f] } return len(src) * 2 }  Encode函数将src目标字节数组，转换成16进制形式的dst字节数组，数组长度翻倍
+原理：将原来用一个字节表示的内容，用两个字节来表示，所以返回的dst是src的两倍长度
+将原字节右移4位，得到高位内容(ascii码)，放在第一个字节，原字节与0000 1111与,得到低位内容(ascii码)，放到第二字节
+func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)/2; i++ { a, ok := fromHexChar(src[i*2]) if !
+    
+    <p></p>
+    <a href="/decimal/">Read More →</a>
+    
+</article>
+
+
+    
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/dep/">dep依赖管理</a>
         </h2>
         
 
@@ -388,11 +434,15 @@ git branch -f master HEAD git checkout master  相关网页
     <ol class="list-unstyled">
         
         <li>
-            <a href="/post/2018-09-29-fmt/">占位符</a>
+            <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
         </li>
         
         <li>
-            <a href="/post/2018-09-28-dep/">dep依赖管理</a>
+            <a href="/decimal/">进制学习</a>
+        </li>
+        
+        <li>
+            <a href="/dep/">dep依赖管理</a>
         </li>
         
         <li>
@@ -401,10 +451,6 @@ git branch -f master HEAD git checkout master  相关网页
         
         <li>
             <a href="/2018/09/25/xorm/">xorm基本操作</a>
-        </li>
-        
-        <li>
-            <a href="/2018/09/24/tcp/">简单的tcp实例</a>
         </li>
         
     </ol>
@@ -445,6 +491,8 @@ git branch -f master HEAD git checkout master  相关网页
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
             
             <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
             
         </p>
         

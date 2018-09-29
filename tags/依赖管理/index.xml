@@ -13,10 +13,10 @@
     
     <item>
       <title>dep依赖管理</title>
-      <link>http://edcismybrother.github.io/post/2018-09-28-dep/</link>
+      <link>http://edcismybrother.github.io/dep/</link>
       <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/post/2018-09-28-dep/</guid>
+      <guid>http://edcismybrother.github.io/dep/</guid>
       <description> 安装dep  go get -u github.com/golang/dep/cmd/dep
  dep基本使用  dep init 执行这个命令会将当前目录下所有文件import的第三方工具进行打包
  这个建议加上-v ,可以看日志

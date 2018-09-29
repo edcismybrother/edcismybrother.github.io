@@ -13,19 +13,34 @@
     
     <item>
       <title>占位符</title>
-      <link>http://edcismybrother.github.io/post/2018-09-29-fmt/</link>
+      <link>http://edcismybrother.github.io/%E5%8D%A0%E4%BD%8D%E7%AC%A6/</link>
       <pubDate>Sat, 29 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/post/2018-09-29-fmt/</guid>
+      <guid>http://edcismybrother.github.io/%E5%8D%A0%E4%BD%8D%E7%AC%A6/</guid>
       <description>普通占位符 占位符 说明 举例 输出 %v 相应值的默认格式。 Printf(&amp;quot;%v&amp;quot;, people) {zhangsan}， %+v 打印结构体时，会添加字段名 Printf(&amp;quot;%+v&amp;quot;, people) {Name:zhangsan} %#v 相应值的Go语法表示 Printf(&amp;quot;#v&amp;quot;, people) main.Human{Name:&amp;quot;zhangsan&amp;quot;} %T 相应值的类型的Go语法表示 Printf(&amp;quot;%T&amp;quot;, people) main.Human %% 字面上的百分号，并非值的占位符 Printf(&amp;quot;%%&amp;quot;) %  布尔占位符 占位符 说明 举例 输出 %t true 或 false。 Printf(&amp;quot;%t&amp;quot;, true) true  整数占位符 占位符 说明 举例 输出 %b 二进制表示 Printf(&amp;quot;%b&amp;quot;, 5) 101 %c 相应Unicode码点所表示的字符 Printf(&amp;quot;%c&amp;quot;, 0x4E2D) 中 %d 十进制表示 Printf(&amp;quot;%d&amp;quot;, 0x12) 18 %o 八进制表示 Printf(&amp;quot;%d&amp;quot;, 10) 12 %q 单引号围绕的字符字面值，由Go语法安全地转义 Printf(&amp;quot;%q&amp;quot;, 0x4E2D) &#39;中&#39; %x 十六进制表示，字母形式为小写 a-f Printf(&amp;quot;%x&amp;quot;, 13) d %X 十六进制表示，字母形式为大写 A-F Printf(&amp;quot;%x&amp;quot;, 13) D %U Unicode格式：U+1234，等同于 &amp;quot;U+%04X&amp;quot; Printf(&amp;quot;%U&amp;quot;, 0x4E2D) U+4E2D  浮点数和复数的组成部分（实部和虚部） 占位符 说明 举例 输出 %b 无小数部分的，指数为二的幂的科学计数法， 与 strconv.</description>
     </item>
     
     <item>
+      <title>进制学习</title>
+      <link>http://edcismybrother.github.io/decimal/</link>
+      <pubDate>Sat, 29 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/decimal/</guid>
+      <description>进制对应的英文 name 中文名 含义 举例（以十进制为标准，10的转换） binary 二进制 满2进1 1010 Octal 八进制 满8进1 12 Decimal 十进制 满10进1 10 Hex 十六进制 满16进1 a  进制转换在线工具
+golang中进制之间的相互转换 首先看看go自带的包  &amp;ldquo;encoding/hex&amp;rdquo; &amp;ldquo;encoding/binary&amp;rdquo;
+ 重点分析 2、10、16进制之间的相互转换
+hex 分析 func Encode(dst, src []byte) int { for i, v := range src { dst[i*2] = hextable[v&amp;gt;&amp;gt;4] dst[i*2+1] = hextable[v&amp;amp;0x0f] } return len(src) * 2 }  Encode函数将src目标字节数组，转换成16进制形式的dst字节数组，数组长度翻倍
+原理：将原来用一个字节表示的内容，用两个字节来表示，所以返回的dst是src的两倍长度
+将原字节右移4位，得到高位内容(ascii码)，放在第一个字节，原字节与0000 1111与,得到低位内容(ascii码)，放到第二字节
+func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &amp;lt; len(src)/2; i++ { a, ok := fromHexChar(src[i*2]) if !</description>
+    </item>
+    
+    <item>
       <title>dep依赖管理</title>
-      <link>http://edcismybrother.github.io/post/2018-09-28-dep/</link>
+      <link>http://edcismybrother.github.io/dep/</link>
       <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://edcismybrother.github.io/post/2018-09-28-dep/</guid>
+      <guid>http://edcismybrother.github.io/dep/</guid>
       <description> 安装dep  go get -u github.com/golang/dep/cmd/dep
  dep基本使用  dep init 执行这个命令会将当前目录下所有文件import的第三方工具进行打包
  这个建议加上-v ,可以看日志
