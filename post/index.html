@@ -9,7 +9,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/post/" />
-<meta property="og:updated_time" content="2018-09-29T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-09-30T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
@@ -68,6 +68,48 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/archive/">golang源码分析&mdash;archive</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 30, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0">源码学习</a>
+    
+</div>
+
+        
+    </header>
+    zip 使用方法 写
+// 写到文件中 src,err := os.Create(&quot;/name.zip&quot;) if err != nil{ return } w := zip.NewWriter(src) // 给写入的文件写名字,Create()函数，默认的压缩方式是deflate，需要选择压缩方式可以用CreateHeader() // Store uint16 = 0 // no compression // Deflate uint16 = 8 // DEFLATE compressed f,err := w.Create(&quot;name&quot;) if err != nil{ return } //将内容写入相应的文件中,data是二进制字节流 _,err:=f.write(data) if err != nil { return } // 写完后，需要注意关闭w w.Close() err := w.Close() if err != nil { log.Fatal(err) }  读(常用就是解压缩)
+// OpenReader 打开要读取的zip,path:zip文件路径 rc ,err := zip.
+    
+    <p></p>
+    <a href="/archive/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -434,6 +476,10 @@ git branch -f master HEAD git checkout master  相关网页
     <ol class="list-unstyled">
         
         <li>
+            <a href="/archive/">golang源码分析&mdash;archive</a>
+        </li>
+        
+        <li>
             <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
         </li>
         
@@ -447,10 +493,6 @@ git branch -f master HEAD git checkout master  相关网页
         
         <li>
             <a href="/2018/09/25/aes/">aes加密</a>
-        </li>
-        
-        <li>
-            <a href="/2018/09/25/xorm/">xorm基本操作</a>
         </li>
         
     </ol>
@@ -487,6 +529,8 @@ git branch -f master HEAD git checkout master  相关网页
             <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
             
             <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0">源码学习</a>
             
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
             

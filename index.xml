@@ -6,10 +6,21 @@
     <description>Recent content on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Sat, 29 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang源码分析---archive</title>
+      <link>http://edcismybrother.github.io/archive/</link>
+      <pubDate>Sun, 30 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/archive/</guid>
+      <description>zip 使用方法 写
+// 写到文件中 src,err := os.Create(&amp;quot;/name.zip&amp;quot;) if err != nil{ return } w := zip.NewWriter(src) // 给写入的文件写名字,Create()函数，默认的压缩方式是deflate，需要选择压缩方式可以用CreateHeader() // Store uint16 = 0 // no compression // Deflate uint16 = 8 // DEFLATE compressed f,err := w.Create(&amp;quot;name&amp;quot;) if err != nil{ return } //将内容写入相应的文件中,data是二进制字节流 _,err:=f.write(data) if err != nil { return } // 写完后，需要注意关闭w w.Close() err := w.Close() if err != nil { log.Fatal(err) }  读(常用就是解压缩)
+// OpenReader 打开要读取的zip,path:zip文件路径 rc ,err := zip.</description>
+    </item>
     
     <item>
       <title>占位符</title>
