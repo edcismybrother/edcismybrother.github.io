@@ -5,22 +5,24 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="aes加密" />
-<meta property="og:description" content="aes加密详解" />
+<meta property="og:title" content="golang标准包分析---bytes" />
+<meta property="og:description" content="bytes包对外提供的函数  这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）
+ 汇编类型 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &lt; b, and &#43;1 if a &gt; b. // A nil argument is equivalent to an empty slice." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://edcismybrother.github.io/2018/09/25/aes/" /><meta property="article:published_time" content="2018-09-25T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-09-25T00:00:00&#43;00:00"/>
+<meta property="og:url" content="http://edcismybrother.github.io/bytes/" /><meta property="article:published_time" content="2018-10-09T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-10-09T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="aes加密"/>
-<meta name="twitter:description" content="aes加密详解"/>
+<meta name="twitter:title" content="golang标准包分析---bytes"/>
+<meta name="twitter:description" content="bytes包对外提供的函数  这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）
+ 汇编类型 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &lt; b, and &#43;1 if a &gt; b. // A nil argument is equivalent to an empty slice."/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/2018/09/25/aes/">
+    <link rel="canonical" href="http://edcismybrother.github.io/bytes/">
 
     <title>
       
-        aes加密 | 皮智文的小宝库
+        golang标准包分析---bytes | 皮智文的小宝库
       
     </title>
 
@@ -66,14 +68,14 @@
 
 <header>
     <h2 class="blog-post-title">
-        <a class="text-dark" href="/2018/09/25/aes/">aes加密</a>
+        <a class="text-dark" href="/bytes/">golang标准包分析&mdash;bytes</a>
     </h2>
     
 
 
 <div class="blog-post-date text-secondary">
     
-        Sep 25, 2018
+        Oct 9, 2018
     
     
         by <span rel="author">皮智文</span>
@@ -84,9 +86,7 @@
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
-    
-        <a class="badge badge-primary" href="/tags/aes">aes</a>
+        <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
     
 </div>
 
@@ -94,12 +94,48 @@
     <hr>
 </header>
 <article class="blog-post">
-    <p><a href="https://blog.csdn.net/qq_28205153/article/details/55798628">aes加密详解</a></p>
+    
+
+<h1 id="bytes包对外提供的函数">bytes包对外提供的函数</h1>
+
+<blockquote>
+<p>这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）</p>
+</blockquote>
+
+<h2 id="汇编类型">汇编类型</h2>
+
+<pre><code>// Index returns the index of the first instance of sep in s, or -1 if sep is not present in s.
+func Index(s, sep []byte) int {```}
+这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1
+
+// Compare returns an integer comparing two byte slices lexicographically.
+// The result will be 0 if a==b, -1 if a &lt; b, and +1 if a &gt; b.
+// A nil argument is equivalent to an empty slice.
+func Compare(a, b []byte) int // in internal/bytealg
+此函数从注释上可以看出是按照字典顺序比较两组切片的大小,实际测试发现是对应索引的相互比较，
+如果切片长度一致，a[i] != b[i]就返回结果，否则返回0,
+如果切片长度不一致，先比较对应索引的值，如果都一样，则看切片长度，长的大返回1
+
+// Contains reports whether subslice is within b.
+func Contains(b, subslice []byte) bool {
+    return Index(b, subslice) != -1
+}
+此函数调用的是Index()函数
+
+&lt;!-- 他会返回chars中任意一个unicode代码点第一次出现在s的字节索引 --&gt;
+</code></pre>
 
 
     
 
     
+
+    <h4>See also</h4>
+    <ul>
+        
+            <li><a href="/archive/">golang标准包分析---archive</a></li>
+        
+    </ul>
 
 
 </article>

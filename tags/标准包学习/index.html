@@ -5,22 +5,22 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="aes加密" />
-<meta property="og:description" content="aes加密详解" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://edcismybrother.github.io/2018/09/25/aes/" /><meta property="article:published_time" content="2018-09-25T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-09-25T00:00:00&#43;00:00"/>
+<meta property="og:title" content="标准包学习" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://edcismybrother.github.io/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0/" />
+<meta property="og:updated_time" content="2018-10-09T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="aes加密"/>
-<meta name="twitter:description" content="aes加密详解"/>
+<meta name="twitter:title" content="标准包学习"/>
+<meta name="twitter:description" content=""/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/2018/09/25/aes/">
+    <link rel="canonical" href="http://edcismybrother.github.io/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0/">
 
     <title>
       
-        aes加密 | 皮智文的小宝库
+        标准包学习 | 皮智文的小宝库
       
     </title>
 
@@ -29,6 +29,8 @@
 
     <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
 
+    
+    <link href="http://edcismybrother.github.io/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
     
 
     
@@ -64,45 +66,96 @@
 
           
 
-<header>
-    <h2 class="blog-post-title">
-        <a class="text-dark" href="/2018/09/25/aes/">aes加密</a>
-    </h2>
+
+
+
+
+
     
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/bytes/">golang标准包分析&mdash;bytes</a>
+        </h2>
+        
 
 
 <div class="blog-post-date text-secondary">
     
-        Sep 25, 2018
+        Oct 9, 2018
     
     
         by <span rel="author">皮智文</span>
     
 </div>
 
-    
+        
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
-    
-        <a class="badge badge-primary" href="/tags/aes">aes</a>
+        <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
     
 </div>
 
+        
+    </header>
+    bytes包对外提供的函数  这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）
+ 汇编类型 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &lt; b, and +1 if a &gt; b. // A nil argument is equivalent to an empty slice.
     
-    <hr>
-</header>
-<article class="blog-post">
-    <p><a href="https://blog.csdn.net/qq_28205153/article/details/55798628">aes加密详解</a></p>
-
-
+    <p></p>
+    <a href="/bytes/">Read More →</a>
     
-
-    
-
-
 </article>
+
+
+    
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/archive/">golang标准包分析&mdash;archive</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 30, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+    
+</div>
+
+        
+    </header>
+    zip 使用方法 写
+// 写到文件中 src,err := os.Create(&quot;/name.zip&quot;) if err != nil{ return } w := zip.NewWriter(src) // 给写入的文件写名字,Create()函数，默认的压缩方式是deflate，需要选择压缩方式可以用CreateHeader() // Store uint16 = 0 // no compression // Deflate uint16 = 8 // DEFLATE compressed f,err := w.Create(&quot;name&quot;) if err != nil{ return } //将内容写入相应的文件中,data是二进制字节流 _,err:=f.write(data) if err != nil { return } // 写完后，需要注意关闭w w.Close() err := w.Close() if err != nil { log.Fatal(err) }  读(常用就是解压缩)
+// OpenReader 打开要读取的zip,path:zip文件路径 rc ,err := zip.
+    
+    <p></p>
+    <a href="/archive/">Read More →</a>
+    
+</article>
+
+
+    
+
+
+
+
+
 
 
 

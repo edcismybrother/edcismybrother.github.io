@@ -10,7 +10,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/" />
-<meta property="og:updated_time" content="2018-09-30T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-10-09T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="皮智文的小宝库"/>
 <meta name="twitter:description" content=""/>
@@ -76,7 +76,48 @@
         <article class="blog-post">
     <header>
         <h2 class="blog-post-title">
-            <a class="text-dark" href="/archive/">golang源码分析&mdash;archive</a>
+            <a class="text-dark" href="/bytes/">golang标准包分析&mdash;bytes</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Oct 9, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+    
+</div>
+
+        
+    </header>
+    bytes包对外提供的函数  这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）
+ 汇编类型 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &lt; b, and +1 if a &gt; b. // A nil argument is equivalent to an empty slice.
+    
+    <p></p>
+    <a href="/bytes/">Read More →</a>
+    
+</article>
+
+
+    
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/archive/">golang标准包分析&mdash;archive</a>
         </h2>
         
 
@@ -94,7 +135,7 @@
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0">源码学习</a>
+        <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
     
 </div>
 
@@ -477,7 +518,11 @@ git branch -f master HEAD git checkout master  相关网页
     <ol class="list-unstyled">
         
         <li>
-            <a href="/archive/">golang源码分析&mdash;archive</a>
+            <a href="/bytes/">golang标准包分析&mdash;bytes</a>
+        </li>
+        
+        <li>
+            <a href="/archive/">golang标准包分析&mdash;archive</a>
         </li>
         
         <li>
@@ -490,10 +535,6 @@ git branch -f master HEAD git checkout master  相关网页
         
         <li>
             <a href="/dep/">dep依赖管理</a>
-        </li>
-        
-        <li>
-            <a href="/2018/09/25/aes/">aes加密</a>
         </li>
         
     </ol>
@@ -531,7 +572,7 @@ git branch -f master HEAD git checkout master  相关网页
             
             <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
             
-            <a class="badge badge-primary" href="/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0">源码学习</a>
+            <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
             
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
             
