@@ -18,7 +18,7 @@
       
       <guid>http://edcismybrother.github.io/bytes/</guid>
       <description>bytes包对外提供的函数  这里将函数分为两类，一类是汇编（这种只需要明白用法就行），一类是使用代码实现的（这种需要好好学习）
- 汇编类型 // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &amp;lt; b, and +1 if a &amp;gt; b. // A nil argument is equivalent to an empty slice.</description>
+ // Index returns the index of the first instance of sep in s, or -1 if sep is not present in s. func Index(s, sep []byte) int {```} 这个函数内部的核心函数是bytealg.Index()，此函数属于汇编类型，用处就是返回首个存在于s中的sep实例的索引，如果不存在返回-1 // Compare returns an integer comparing two byte slices lexicographically. // The result will be 0 if a==b, -1 if a &amp;lt; b, and +1 if a &amp;gt; b. // A nil argument is equivalent to an empty slice.</description>
     </item>
     
     <item>
