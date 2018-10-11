@@ -6,10 +6,22 @@
     <description>Recent content in Posts on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Tue, 09 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 11 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>干货达人网址链接</title>
+      <link>http://edcismybrother.github.io/%E5%B9%B2%E8%B4%A7/</link>
+      <pubDate>Thu, 11 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/%E5%B9%B2%E8%B4%A7/</guid>
+      <description>GitHub上优秀的Go开源项目
+awesome优秀框架分享（英文版）
+awesome优秀框架分享（中文版）
+github上优秀的储存框架</description>
+    </item>
     
     <item>
       <title>golang标准包分析---bytes</title>
