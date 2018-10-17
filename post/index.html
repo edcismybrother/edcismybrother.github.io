@@ -9,7 +9,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/post/" />
-<meta property="og:updated_time" content="2018-10-15T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-10-17T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
@@ -68,6 +68,49 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Oct 17, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+    
+        <a class="badge badge-primary" href="/tags/http">http</a>
+    
+</div>
+
+        
+    </header>
+    服务端 服务端是用来接收连接的，因此需要一个监听的逻辑
+// 函数ListenAndServe用来开启服务并且监听，而这个 // 函数的核心就是tcp连接，通过net.Listen(param1,param2)得到listener // 其中param1是连接类型，可以有tcp,tcp4,tcp6......,param2则是服务地址：ip:port // 返回的listener是一个interface{}类型 type Listener interface { // Accept waits for and returns the next connection to the listener. Accept() (Conn, error) // Close closes the listener. // Any blocked Accept operations will be unblocked and return errors. Close() error // Addr returns the listener's network address. Addr() Addr }  只要实现了Listener的三个函数的结构体，都能作为返回参数，以param1=tcp为例子，将会返回TCPListener // TCPListener is a TCP network listener. Clients should typically // use variables of type Listener instead of assuming TCP.
+    
+    <p></p>
+    <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -440,55 +483,6 @@ dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
 
 
 
-    
-        <article class="blog-post">
-    <header>
-        <h2 class="blog-post-title">
-            <a class="text-dark" href="/2018/09/24/tcp/">简单的tcp实例</a>
-        </h2>
-        
-
-
-<div class="blog-post-date text-secondary">
-    
-        Sep 24, 2018
-    
-    
-        by <span rel="author">皮智文</span>
-    
-</div>
-
-        
-<div class="blog-post-tags text-secondary">
-    <strong>Tags:</strong>
-    
-        <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
-    
-        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
-    
-        <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
-    
-</div>
-
-        
-    </header>
-    tcp服务器 开启对服务器ip以及端口的监听
-lis, err := net.Listen(&quot;tcp&quot;, &quot;:6666&quot;) if err != nil { log.Fatalf(&quot;failed to listen:%v&quot;, err) }  用for循环从监听者处取发起拨号的连接
-for { conn, err := lis.Accept() if err != nil { log.Fatalf(&quot;failed to accept:%v&quot;, err) continue } sendMessage(conn) time.Sleep(time.Second * 1) }  写两个函数用来收发消息
-发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送
-func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&quot;failed to write:%v&quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
-func recv(){ b := make([]byte,1024) _,err := conn.
-    
-    <p></p>
-    <a href="/2018/09/24/tcp/">Read More →</a>
-    
-</article>
-
-
-    
-
-
-
 
 
 <nav class="blog-pagination">
@@ -555,6 +549,10 @@ func recv(){ b := make([]byte,1024) _,err := conn.
     <ol class="list-unstyled">
         
         <li>
+            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </li>
+        
+        <li>
             <a href="/ssh/">ssh连接</a>
         </li>
         
@@ -568,10 +566,6 @@ func recv(){ b := make([]byte,1024) _,err := conn.
         
         <li>
             <a href="/archive/">golang标准包分析&mdash;archive</a>
-        </li>
-        
-        <li>
-            <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
         </li>
         
     </ol>
@@ -592,6 +586,8 @@ func recv(){ b := make([]byte,1024) _,err := conn.
             <a class="badge badge-primary" href="/tags/db">db</a>
             
             <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
             
             <a class="badge badge-primary" href="/tags/markdown">markdown</a>
             

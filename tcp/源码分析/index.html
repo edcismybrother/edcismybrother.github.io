@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="golang标准包分析---http" />
+<meta property="og:description" content="服务端 服务端是用来接收连接的，因此需要一个监听的逻辑
+// 函数ListenAndServe用来开启服务并且监听，而这个 // 函数的核心就是tcp连接，通过net.Listen(param1,param2)得到listener // 其中param1是连接类型，可以有tcp,tcp4,tcp6......,param2则是服务地址：ip:port // 返回的listener是一个interface{}类型 type Listener interface { // Accept waits for and returns the next connection to the listener. Accept() (Conn, error) // Close closes the listener. // Any blocked Accept operations will be unblocked and return errors. Close() error // Addr returns the listener&#39;s network address. Addr() Addr }  只要实现了Listener的三个函数的结构体，都能作为返回参数，以param1=tcp为例子，将会返回TCPListener // TCPListener is a TCP network listener. Clients should typically // use variables of type Listener instead of assuming TCP." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://edcismybrother.github.io/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" /><meta property="article:published_time" content="2018-10-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-10-17T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang标准包分析---http"/>
+<meta name="twitter:description" content="服务端 服务端是用来接收连接的，因此需要一个监听的逻辑
+// 函数ListenAndServe用来开启服务并且监听，而这个 // 函数的核心就是tcp连接，通过net.Listen(param1,param2)得到listener // 其中param1是连接类型，可以有tcp,tcp4,tcp6......,param2则是服务地址：ip:port // 返回的listener是一个interface{}类型 type Listener interface { // Accept waits for and returns the next connection to the listener. Accept() (Conn, error) // Close closes the listener. // Any blocked Accept operations will be unblocked and return errors. Close() error // Addr returns the listener&#39;s network address. Addr() Addr }  只要实现了Listener的三个函数的结构体，都能作为返回参数，以param1=tcp为例子，将会返回TCPListener // TCPListener is a TCP network listener. Clients should typically // use variables of type Listener instead of assuming TCP."/>
+
+
+
+    <link rel="canonical" href="http://edcismybrother.github.io/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <title>
+      
+        golang标准包分析---http | 皮智文的小宝库
+      
+    </title>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
+
+    
+
+    
+
+    
+  </head>
+  <body>
+    
+      <header class="blog-header">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            皮智文的小宝库
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                
+            </ul>
+            
+        </div>
+    </nav>
+</header>
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8 blog-main">
+
+          
+
+<header>
+    <h2 class="blog-post-title">
+        <a class="text-dark" href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+    </h2>
+    
+
+
+<div class="blog-post-date text-secondary">
+    
+        Oct 17, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+    
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+    
+        <a class="badge badge-primary" href="/tags/http">http</a>
+    
+</div>
+
+    
+    <hr>
+</header>
+<article class="blog-post">
+    
+
+<h1 id="服务端">服务端</h1>
+
+<p>服务端是用来接收连接的，因此需要一个监听的逻辑</p>
+
+<pre><code>// 函数ListenAndServe用来开启服务并且监听，而这个
+// 函数的核心就是tcp连接，通过net.Listen(param1,param2)得到listener
+// 其中param1是连接类型，可以有tcp,tcp4,tcp6......,param2则是服务地址：ip:port
+// 返回的listener是一个interface{}类型
+type Listener interface {
+    // Accept waits for and returns the next connection to the listener.
+    Accept() (Conn, error)
+
+    // Close closes the listener.
+    // Any blocked Accept operations will be unblocked and return errors.
+    Close() error
+
+    // Addr returns the listener's network address.
+    Addr() Addr
+}
+</code></pre>
+
+<pre><code>只要实现了Listener的三个函数的结构体，都能作为返回参数，以param1=tcp为例子，将会返回TCPListener
+
+// TCPListener is a TCP network listener. Clients should typically
+// use variables of type Listener instead of assuming TCP.
+type TCPListener struct {
+    fd *netFD
+}
+</code></pre>
+
+<pre><code>// Network file descriptor.
+type netFD struct {
+    pfd poll.FD
+
+    // immutable until Close
+    family      int
+    sotype      int
+    isConnected bool // handshake completed or use of association with peer
+    net         string
+    laddr       Addr
+    raddr       Addr
+}
+
+// family 地址系列、地址族
+
+    AF_UNSPEC  = 0
+    AF_UNIX    = 1
+    AF_INET    = 2
+    AF_INET6   = 23
+    AF_NETBIOS = 17
+
+// sotype 套接字类型
+
+    SOCK_STREAM    = 1
+    SOCK_DGRAM     = 2
+    SOCK_RAW       = 3
+    SOCK_SEQPACKET = 5
+
+// net 连接类型
+
+// laddr localaddress本地地址
+// raddr remoteaddress远程地址
+</code></pre>
+
+<pre><code>// 通过newFD函数返回TCPListenner的需要的子结构fd
+
+func newFD(sysfd syscall.Handle, family, sotype int, net string) (*netFD, error) {
+    ret := &amp;netFD{
+        pfd: poll.FD{
+            Sysfd:         sysfd,
+            IsStream:      sotype == syscall.SOCK_STREAM,
+            ZeroReadIsEOF: sotype != syscall.SOCK_DGRAM &amp;&amp; sotype != syscall.SOCK_RAW,
+        },
+        family: family,
+        sotype: sotype,
+        net:    net,
+    }
+    return ret, nil
+}
+</code></pre>
+
+<pre><code>// laddr与raddr在listenstream中set进去
+
+func (fd *netFD) listenStream(laddr sockaddr, backlog int, ctrlFn func(string, string, syscall.RawConn) error) error {
+    var err error
+    if err = setDefaultListenerSockopts(fd.pfd.Sysfd); err != nil {
+        return err
+    }
+    var lsa syscall.Sockaddr
+    if lsa, err = laddr.sockaddr(fd.family); err != nil {
+        return err
+    }
+    if ctrlFn != nil {
+        c, err := newRawConn(fd)
+        if err != nil {
+            return err
+        }
+        if err := ctrlFn(fd.ctrlNetwork(), laddr.String(), c); err != nil {
+            return err
+        }
+    }
+    if err = syscall.Bind(fd.pfd.Sysfd, lsa); err != nil {
+        return os.NewSyscallError(&quot;bind&quot;, err)
+    }
+    if err = listenFunc(fd.pfd.Sysfd, backlog); err != nil {
+        return os.NewSyscallError(&quot;listen&quot;, err)
+    }
+    if err = fd.init(); err != nil {
+        return err
+    }
+    lsa, _ = syscall.Getsockname(fd.pfd.Sysfd)
+    fd.setAddr(fd.addrFunc()(lsa), nil)
+    return nil
+}
+
+func (fd *netFD) setAddr(laddr, raddr Addr) {
+    fd.laddr = laddr
+    fd.raddr = raddr
+    runtime.SetFinalizer(fd, (*netFD).Close)
+}
+</code></pre>
+
+<p>通过以上操作将会得到一个参数齐全的tcpListener，并且以listener接口类型返回给使用者，
+这里值得提的是代码中三个实现的函数并不都是用tcpListener的实现
+其中Addr()函数用的是tcpListener的具体实现
+Accept()用的是tcpKeepAliveListener的具体实现
+Close()用的是onceCloseListener的具体实现
+tcpKeepAliveListener是通过将tcplistener作为自己的子结构，再次实现Accept函数
+onceCloseListener是通过将tcpKeepAliveListener作为自己的子结构，再次实现Close函数</p>
+
+<pre><code>type tcpKeepAliveListener struct {
+    *net.TCPListener
+}
+
+func (ln tcpKeepAliveListener) Accept() (net.Conn, error) {
+    tc, err := ln.AcceptTCP()
+    if err != nil {
+        return nil, err
+    }
+    tc.SetKeepAlive(true)
+    tc.SetKeepAlivePeriod(3 * time.Minute)
+    return tc, nil
+}
+
+// AcceptTCP accepts the next incoming call and returns the new
+// connection.
+func (l *TCPListener) AcceptTCP() (*TCPConn, error) {
+    if !l.ok() {
+        return nil, syscall.EINVAL
+    }
+    c, err := l.accept()
+    if err != nil {
+        return nil, &amp;OpError{Op: &quot;accept&quot;, Net: l.fd.net, Source: nil, Addr: l.fd.laddr, Err: err}
+    }
+    return c, nil
+}
+</code></pre>
+
+<pre><code>// onceCloseListener wraps a net.Listener, protecting it from
+// multiple Close calls.
+type onceCloseListener struct {
+    net.Listener
+    once     sync.Once
+    closeErr error
+}
+
+func (oc *onceCloseListener) Close() error {
+    oc.once.Do(oc.close)
+    return oc.closeErr
+}
+
+func (oc *onceCloseListener) close() { oc.closeErr = oc.Listener.Close() }
+</code></pre>
+
+<p>最后实际建立连接的函数，调用的还是netFD的accept()，通过将连接建立成功的local与remote地址存放在netFD中关联起来</p>
+
+<pre><code>func (fd *netFD) accept() (*netFD, error) {
+    s, rawsa, rsan, errcall, err := fd.pfd.Accept(func() (syscall.Handle, error) {
+        return sysSocket(fd.family, fd.sotype, 0)
+    })
+
+    if err != nil {
+        if errcall != &quot;&quot; {
+            err = wrapSyscallError(errcall, err)
+        }
+        return nil, err
+    }
+
+    // Associate our new socket with IOCP.
+    netfd, err := newFD(s, fd.family, fd.sotype, fd.net)
+    if err != nil {
+        poll.CloseFunc(s)
+        return nil, err
+    }
+    if err := netfd.init(); err != nil {
+        fd.Close()
+        return nil, err
+    }
+
+    // Get local and peer addr out of AcceptEx buffer.
+    var lrsa, rrsa *syscall.RawSockaddrAny
+    var llen, rlen int32
+    syscall.GetAcceptExSockaddrs((*byte)(unsafe.Pointer(&amp;rawsa[0])),
+        0, rsan, rsan, &amp;lrsa, &amp;llen, &amp;rrsa, &amp;rlen)
+    lsa, _ := lrsa.Sockaddr()
+    rsa, _ := rrsa.Sockaddr()
+
+    netfd.setAddr(netfd.addrFunc()(lsa), netfd.addrFunc()(rsa))
+    return netfd, nil
+}
+</code></pre>
+
+<p>具体的accept函数逻辑暂时不去分析，当前只用知道创建监听者成功后，
+通过accept函数可以获取远程连接，且将远程连接与本地连接关联起来返回给使用者</p>
+
+<h1 id="注册handle">注册handle</h1>
+
+<p>这里将handle理解为路由，通过函数调用将路由与对应的处理函数以key value的形式存储起来</p>
+
+<pre><code>http.Handle(&quot;/hello2&quot;, &amp;hello{})
+http.Handle(&quot;/hello&quot;, http.HandlerFunc(Hello))
+
+// 这里实现的函数或者结构体也好，都要实现Handler接口
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+
+// 注册成功的handle都会存在DefaultServeMux中
+func Handle(pattern string, handler Handler) { DefaultServeMux.Handle(pattern, handler) }
+</code></pre>
+
+<h1 id="调用handle">调用handle</h1>
+
+<p>在accept连接成功后，会单开一个协程为连接服务</p>
+
+<pre><code>for {
+        rw, e := l.Accept()
+        if e != nil {
+            select {
+            case &lt;-srv.getDoneChan():
+                return ErrServerClosed
+            default:
+            }
+            if ne, ok := e.(net.Error); ok &amp;&amp; ne.Temporary() {
+                if tempDelay == 0 {
+                    tempDelay = 5 * time.Millisecond
+                } else {
+                    tempDelay *= 2
+                }
+                if max := 1 * time.Second; tempDelay &gt; max {
+                    tempDelay = max
+                }
+                srv.logf(&quot;http: Accept error: %v; retrying in %v&quot;, e, tempDelay)
+                time.Sleep(tempDelay)
+                continue
+            }
+            return e
+        }
+        tempDelay = 0
+        c := srv.newConn(rw)
+        c.setState(c.rwc, StateNew) // before Serve can return
+        go c.serve(ctx)
+    }
+</code></pre>
+
+<p>在serve函数中会先做一些细节处理，然后读取请求，具体什么不去分析，处理结束后，
+读取http客户端请求成功后,会对DefaultServeMux轮询，找到合适的路由，并执行对应路由函数的相关逻辑</p>
+
+<pre><code>        // HTTP cannot have multiple simultaneous active requests.[*]
+        // Until the server replies to this request, it can't read another,
+        // so we might as well run the handler in this goroutine.
+        // [*] Not strictly true: HTTP pipelining. We could let them all process
+        // in parallel even if their responses need to be serialized.
+        // But we're not going to implement HTTP pipelining because it
+        // was never deployed in the wild and the answer is HTTP/2.
+        serverHandler{c.server}.ServeHTTP(w, w.req)
+        w.cancelCtx()
+
+    func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {
+    handler := sh.srv.Handler
+    if handler == nil {
+        handler = DefaultServeMux
+    }
+    if req.RequestURI == &quot;*&quot; &amp;&amp; req.Method == &quot;OPTIONS&quot; {
+        handler = globalOptionsHandler{}
+    }
+    handler.ServeHTTP(rw, req)
+}
+</code></pre>
+
+<p>以上就是golang自带http服务的基本内容，包括了服务器的启动，监听者Listener的具体结构分析、路由的注册、handle的储存方式、以及handle的调用</p>
+
+<p>稍后会继续分析accept接收成功后的conn对象具体结构，以及读写操作的实现函数分析</p>
+
+
+    
+
+    
+
+    <h4>See also</h4>
+    <ul>
+        
+            <li><a href="/2018/09/24/tcp/">简单的tcp实例</a></li>
+        
+    </ul>
+
+
+</article>
+
+
+
+        </div>
+
+        <aside class="col-12 col-lg-3 ml-auto blog-sidebar">
+    
+        
+
+
+<section>
+    <h4>Recent Posts</h4>
+    <ol class="list-unstyled">
+        
+        <li>
+            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </li>
+        
+        <li>
+            <a href="/ssh/">ssh连接</a>
+        </li>
+        
+        <li>
+            <a href="/%E5%B9%B2%E8%B4%A7/">干货达人网址链接</a>
+        </li>
+        
+        <li>
+            <a href="/bytes/">golang标准包分析&mdash;bytes</a>
+        </li>
+        
+        <li>
+            <a href="/archive/">golang标准包分析&mdash;archive</a>
+        </li>
+        
+    </ol>
+</section>
+
+    
+    
+        <section>
+    
+        
+    
+        
+        <h4>Tags</h4>
+        <p>
+            
+            <a class="badge badge-primary" href="/tags/aes">aes</a>
+            
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
+            <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
+            
+            <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/ssh">ssh</a>
+            
+            <a class="badge badge-primary" href="/tags/submodule">submodule</a>
+            
+            <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%B9%B2%E8%B4%A7">干货</a>
+            
+            <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+            
+        </p>
+        
+    
+</section>
+    
+</aside>
+
+      </div>
+    </div>
+    
+
+    
+      
+
+
+
+
+
+
+<footer class="blog-footer w-100">
+    <nav class="navbar navbar-light bg-light">
+        <p class="w-100 text-center">Hugo template made with ❤ by <a href="https://github.com/Xzya">Xzya</a>, inspired by <a href="https://github.com/alanorth/hugo-theme-bootstrap4-blog">hugo-theme-bootstrap4-blog</a></p>
+        <p class="w-100 text-center"><a href="#">Back to top</a></p>
+    </nav>
+</footer>
+
+    
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>

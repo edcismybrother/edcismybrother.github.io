@@ -10,7 +10,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/" />
-<meta property="og:updated_time" content="2018-09-20T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-09-24T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="皮智文的小宝库"/>
 <meta name="twitter:description" content=""/>
@@ -69,6 +69,55 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/2018/09/24/tcp/">简单的tcp实例</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 24, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+    
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+    
+        <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+    
+</div>
+
+        
+    </header>
+    tcp服务器 开启对服务器ip以及端口的监听
+lis, err := net.Listen(&quot;tcp&quot;, &quot;:6666&quot;) if err != nil { log.Fatalf(&quot;failed to listen:%v&quot;, err) }  用for循环从监听者处取发起拨号的连接
+for { conn, err := lis.Accept() if err != nil { log.Fatalf(&quot;failed to accept:%v&quot;, err) continue } sendMessage(conn) time.Sleep(time.Second * 1) }  写两个函数用来收发消息
+发消息:将需要发送的消息内容，通过相关的序列化操作，转化成字节流，将字节流通过write函数发送
+func send(){ _,err := conn.Write([]byte(str)) if err != nil { log.Fatalf(&quot;failed to write:%v&quot;, err) } }  收消息:通过read函数将字节流读出来，然后通过相关的反序列化操作，得到想要的消息
+func recv(){ b := make([]byte,1024) _,err := conn.
+    
+    <p></p>
+    <a href="/2018/09/24/tcp/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -226,6 +275,10 @@ git branch -f master HEAD git checkout master  相关网页
     <ol class="list-unstyled">
         
         <li>
+            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </li>
+        
+        <li>
             <a href="/ssh/">ssh连接</a>
         </li>
         
@@ -239,10 +292,6 @@ git branch -f master HEAD git checkout master  相关网页
         
         <li>
             <a href="/archive/">golang标准包分析&mdash;archive</a>
-        </li>
-        
-        <li>
-            <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
         </li>
         
     </ol>
@@ -263,6 +312,8 @@ git branch -f master HEAD git checkout master  相关网页
             <a class="badge badge-primary" href="/tags/db">db</a>
             
             <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
             
             <a class="badge badge-primary" href="/tags/markdown">markdown</a>
             
