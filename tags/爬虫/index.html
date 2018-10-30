@@ -5,22 +5,22 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="Http" />
+<meta property="og:title" content="爬虫" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://edcismybrother.github.io/tags/http/" />
+<meta property="og:url" content="http://edcismybrother.github.io/tags/%E7%88%AC%E8%99%AB/" />
 <meta property="og:updated_time" content="2018-10-30T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Http"/>
+<meta name="twitter:title" content="爬虫"/>
 <meta name="twitter:description" content=""/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/tags/http/">
+    <link rel="canonical" href="http://edcismybrother.github.io/tags/%E7%88%AC%E8%99%AB/">
 
     <title>
       
-        Http | 皮智文的小宝库
+        爬虫 | 皮智文的小宝库
       
     </title>
 
@@ -30,7 +30,7 @@
     <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
 
     
-    <link href="http://edcismybrother.github.io/tags/http/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
+    <link href="http://edcismybrother.github.io/tags/%E7%88%AC%E8%99%AB/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
     
 
     
@@ -105,49 +105,6 @@
     
     <p></p>
     <a href="/colly/">Read More →</a>
-    
-</article>
-
-
-    
-
-
-
-    
-        <article class="blog-post">
-    <header>
-        <h2 class="blog-post-title">
-            <a class="text-dark" href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
-        </h2>
-        
-
-
-<div class="blog-post-date text-secondary">
-    
-        Oct 17, 2018
-    
-    
-        by <span rel="author">皮智文</span>
-    
-</div>
-
-        
-<div class="blog-post-tags text-secondary">
-    <strong>Tags:</strong>
-    
-        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
-    
-        <a class="badge badge-primary" href="/tags/http">http</a>
-    
-</div>
-
-        
-    </header>
-    服务端 服务端是用来接收连接的，因此需要一个监听的逻辑
-// 函数ListenAndServe用来开启服务并且监听，而这个 // 函数的核心就是tcp连接，通过net.Listen(param1,param2)得到listener // 其中param1是连接类型，可以有tcp,tcp4,tcp6......,param2则是服务地址：ip:port // 返回的listener是一个interface{}类型 type Listener interface { // Accept waits for and returns the next connection to the listener. Accept() (Conn, error) // Close closes the listener. // Any blocked Accept operations will be unblocked and return errors. Close() error // Addr returns the listener's network address. Addr() Addr }  只要实现了Listener的三个函数的结构体，都能作为返回参数，以param1=tcp为例子，将会返回TCPListener // TCPListener is a TCP network listener. Clients should typically // use variables of type Listener instead of assuming TCP.
-    
-    <p></p>
-    <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Read More →</a>
     
 </article>
 

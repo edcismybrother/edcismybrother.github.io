@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Wed, 17 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 30 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title></title>
+      <link>http://edcismybrother.github.io/colly/</link>
+      <pubDate>Tue, 30 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/colly/</guid>
+      <description>基本用法  infos := make([]info, 0) c := colly.NewCollector() c.OnHTML(&amp;quot;.content div .rprt&amp;quot;, func(e *colly.HTMLElement) { title := e.ChildText(&amp;quot;.rslt p.title a&amp;quot;) author := e.ChildText(&amp;quot;.supp .desc&amp;quot;) message := e.ChildText(&amp;quot;.supp .details&amp;quot;) pmid := e.ChildText(&amp;quot;.aux .resc .rprtid dd&amp;quot;) id, _ := strconv.ParseInt(pmid, 10, 64) i := info{ title: strings.TrimRight(title, &amp;quot;.&amp;quot;), author: author, message: message, pmid: id, } infos = append(infos, i) }) c.OnRequest(func(req *colly.Request) { log.Println(&amp;quot;Visit:&amp;quot;, req.URL.String()) }) c.Post(&amp;quot;https://www.ncbi.nlm.nih.gov/pubmed&amp;quot;, map[string]string{ &amp;quot;term&amp;quot;: &amp;quot;kif15&amp;quot;, &amp;quot;p$a&amp;quot;: strconv.</description>
+    </item>
     
     <item>
       <title>golang标准包分析---http</title>

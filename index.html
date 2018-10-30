@@ -10,7 +10,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/" />
-<meta property="og:updated_time" content="2018-10-17T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-10-30T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="皮智文的小宝库"/>
 <meta name="twitter:description" content=""/>
@@ -69,6 +69,48 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/colly/"></a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Oct 30, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
+    
+        <a class="badge badge-primary" href="/tags/http">http</a>
+    
+</div>
+
+        
+    </header>
+    基本用法  infos := make([]info, 0) c := colly.NewCollector() c.OnHTML(&quot;.content div .rprt&quot;, func(e *colly.HTMLElement) { title := e.ChildText(&quot;.rslt p.title a&quot;) author := e.ChildText(&quot;.supp .desc&quot;) message := e.ChildText(&quot;.supp .details&quot;) pmid := e.ChildText(&quot;.aux .resc .rprtid dd&quot;) id, _ := strconv.ParseInt(pmid, 10, 64) i := info{ title: strings.TrimRight(title, &quot;.&quot;), author: author, message: message, pmid: id, } infos = append(infos, i) }) c.OnRequest(func(req *colly.Request) { log.Println(&quot;Visit:&quot;, req.URL.String()) }) c.Post(&quot;https://www.ncbi.nlm.nih.gov/pubmed&quot;, map[string]string{ &quot;term&quot;: &quot;kif15&quot;, &quot;p$a&quot;: strconv.
+    
+    <p></p>
+    <a href="/colly/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -445,45 +487,6 @@ dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
 
 
 
-    
-        <article class="blog-post">
-    <header>
-        <h2 class="blog-post-title">
-            <a class="text-dark" href="/2018/09/25/xorm/">xorm基本操作</a>
-        </h2>
-        
-
-
-<div class="blog-post-date text-secondary">
-    
-        Sep 25, 2018
-    
-    
-        by <span rel="author">皮智文</span>
-    
-</div>
-
-        
-<div class="blog-post-tags text-secondary">
-    <strong>Tags:</strong>
-    
-        <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
-    
-        <a class="badge badge-primary" href="/tags/db">db</a>
-    
-</div>
-
-        
-    </header>
-     学习链接 
-    
-</article>
-
-
-    
-
-
-
 
 
 <nav class="blog-pagination">
@@ -550,6 +553,10 @@ dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
     <ol class="list-unstyled">
         
         <li>
+            <a href="/colly/"></a>
+        </li>
+        
+        <li>
             <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
         </li>
         
@@ -563,10 +570,6 @@ dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
         
         <li>
             <a href="/bytes/">golang标准包分析&mdash;bytes</a>
-        </li>
-        
-        <li>
-            <a href="/archive/">golang标准包分析&mdash;archive</a>
         </li>
         
     </ol>
@@ -611,6 +614,8 @@ dep ensure -update 依据Gopkg.toml文件的信息获取制定版本的依赖
             <a class="badge badge-primary" href="/tags/%E5%B9%B2%E8%B4%A7">干货</a>
             
             <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
             
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
             
