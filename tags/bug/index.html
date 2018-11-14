@@ -5,22 +5,22 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="markdown" />
-<meta property="og:description" content=" 英文学习链接 中文学习链接 " />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://edcismybrother.github.io/2018/09/24/markdown/" /><meta property="article:published_time" content="2018-09-20T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-09-20T00:00:00&#43;00:00"/>
+<meta property="og:title" content="Bug" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://edcismybrother.github.io/tags/bug/" />
+<meta property="og:updated_time" content="2018-11-13T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="markdown"/>
-<meta name="twitter:description" content=" 英文学习链接 中文学习链接 "/>
+<meta name="twitter:title" content="Bug"/>
+<meta name="twitter:description" content=""/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/2018/09/24/markdown/">
+    <link rel="canonical" href="http://edcismybrother.github.io/tags/bug/">
 
     <title>
       
-        markdown | 皮智文的小宝库
+        Bug | 皮智文的小宝库
       
     </title>
 
@@ -29,6 +29,8 @@
 
     <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
 
+    
+    <link href="http://edcismybrother.github.io/tags/bug/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
     
 
     
@@ -64,58 +66,54 @@
 
           
 
-<header>
-    <h2 class="blog-post-title">
-        <a class="text-dark" href="/2018/09/24/markdown/">markdown</a>
-    </h2>
+
+
+
+
+
     
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">tcp长连接压测遇到的问题</a>
+        </h2>
+        
 
 
 <div class="blog-post-date text-secondary">
     
-        Sep 20, 2018
+        Nov 13, 2018
     
     
         by <span rel="author">皮智文</span>
     
 </div>
 
-    
+        
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
     
-        <a class="badge badge-primary" href="/tags/markdown">markdown</a>
-    
-        <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+        <a class="badge badge-primary" href="/tags/bug">bug</a>
     
 </div>
 
-    
-    <hr>
-</header>
-<article class="blog-post">
-    
-
-<h2 id="英文学习链接-https-daringfireball-net-projects-markdown-syntax"><a href="https://daringfireball.net/projects/markdown/syntax">英文学习链接</a></h2>
-
-<h2 id="中文学习链接-https-www-jianshu-com-p-1e402922ee32"><a href="https://www.jianshu.com/p/1e402922ee32">中文学习链接</a></h2>
-
-
-    
-
-    
-
-    <h4>See also</h4>
-    <ul>
         
-            <li><a href="/2018/09/24/submodule/">submodule</a></li>
-        
-    </ul>
-
-
+    </header>
+    tcp长连接压测遇到的问题 问题1：在大量长连接下，会出现很多拨号失败。 、、、 dial tcp 192.168.31.232:6001: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 、、、 拨号失败的问题在于服务端响应不及时 问题分析：在大量长连接同时请求时，出现了cpu、资源调用阻塞，很多的连接在等待分配 解决办法：轮询创建客户端加上延时
+问题2：部分连接成功的客户端，会在请求的时候得不到相应的响应 目前的模拟客户端设置的时1分钟的超时，在5000长连接的压测下，30s的超时设置，会出现n个超时，1分钟的超时设置，超时的客户端会减少 问题分析：估计也是资源占用造成的问题 解决办法：加大服务器内核
+问题3：部分连接成功的客户端，请求后被告知连接被远程端强制关闭，但服务端却没有主动关闭连接的操作 客户端已经dial成功，但通过返回的conn进行write和read操作被告知连接强制关闭，但服务端没有任何close迹象 原因分析：dial是在第二次握手的时候返回conn，而服务端accept是在第三次握手的时候返回conn，也就是说握手只进行到第二次握手， 这是因为握手的时候有两个队列，一个syn队列一个backlog队列（accept队列），一次握手，cli告诉ser要建立连接，第二次握手，ser通知 cli等待确认连接，这时连接状态进入syn队列，第三次握手，cli通知ser确认连接，连接状态进入backlog队列。 以上就是握手的过程，syn和backlog队列有限制，如果在大量并发连接出现，连接数超过backlog的长度的连接，将会阻塞在队列外，一定时间没有进入到backlog队列，连接将会被丢弃，这就出现了客户端dail成功，而服务端却没有accept。 解决办法：修改服务器内核配置，syn队列上限： /proc/sys/net/core/somaxconn；accept队列上限：/proc/sys/net/ipv4/tcp_max_syn_backlog
+    
 </article>
+
+
+    
+
+
+
+
+
 
 
 

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="tcp长连接压测遇到的问题" />
+<meta property="og:description" content="tcp长连接压测遇到的问题 问题1：在大量长连接下，会出现很多拨号失败。 、、、 dial tcp 192.168.31.232:6001: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 、、、 拨号失败的问题在于服务端响应不及时 问题分析：在大量长连接同时请求时，出现了cpu、资源调用阻塞，很多的连接在等待分配 解决办法：轮询创建客户端加上延时
+问题2：部分连接成功的客户端，会在请求的时候得不到相应的响应 目前的模拟客户端设置的时1分钟的超时，在5000长连接的压测下，30s的超时设置，会出现n个超时，1分钟的超时设置，超时的客户端会减少 问题分析：估计也是资源占用造成的问题 解决办法：加大服务器内核
+问题3：部分连接成功的客户端，请求后被告知连接被远程端强制关闭，但服务端却没有主动关闭连接的操作 客户端已经dial成功，但通过返回的conn进行write和read操作被告知连接强制关闭，但服务端没有任何close迹象 原因分析：dial是在第二次握手的时候返回conn，而服务端accept是在第三次握手的时候返回conn，也就是说握手只进行到第二次握手， 这是因为握手的时候有两个队列，一个syn队列一个backlog队列（accept队列），一次握手，cli告诉ser要建立连接，第二次握手，ser通知 cli等待确认连接，这时连接状态进入syn队列，第三次握手，cli通知ser确认连接，连接状态进入backlog队列。 以上就是握手的过程，syn和backlog队列有限制，如果在大量并发连接出现，连接数超过backlog的长度的连接，将会阻塞在队列外，一定时间没有进入到backlog队列，连接将会被丢弃，这就出现了客户端dail成功，而服务端却没有accept。 解决办法：修改服务器内核配置，syn队列上限： /proc/sys/net/core/somaxconn；accept队列上限：/proc/sys/net/ipv4/tcp_max_syn_backlog" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://edcismybrother.github.io/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/" /><meta property="article:published_time" content="2018-11-13T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-13T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="tcp长连接压测遇到的问题"/>
+<meta name="twitter:description" content="tcp长连接压测遇到的问题 问题1：在大量长连接下，会出现很多拨号失败。 、、、 dial tcp 192.168.31.232:6001: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 、、、 拨号失败的问题在于服务端响应不及时 问题分析：在大量长连接同时请求时，出现了cpu、资源调用阻塞，很多的连接在等待分配 解决办法：轮询创建客户端加上延时
+问题2：部分连接成功的客户端，会在请求的时候得不到相应的响应 目前的模拟客户端设置的时1分钟的超时，在5000长连接的压测下，30s的超时设置，会出现n个超时，1分钟的超时设置，超时的客户端会减少 问题分析：估计也是资源占用造成的问题 解决办法：加大服务器内核
+问题3：部分连接成功的客户端，请求后被告知连接被远程端强制关闭，但服务端却没有主动关闭连接的操作 客户端已经dial成功，但通过返回的conn进行write和read操作被告知连接强制关闭，但服务端没有任何close迹象 原因分析：dial是在第二次握手的时候返回conn，而服务端accept是在第三次握手的时候返回conn，也就是说握手只进行到第二次握手， 这是因为握手的时候有两个队列，一个syn队列一个backlog队列（accept队列），一次握手，cli告诉ser要建立连接，第二次握手，ser通知 cli等待确认连接，这时连接状态进入syn队列，第三次握手，cli通知ser确认连接，连接状态进入backlog队列。 以上就是握手的过程，syn和backlog队列有限制，如果在大量并发连接出现，连接数超过backlog的长度的连接，将会阻塞在队列外，一定时间没有进入到backlog队列，连接将会被丢弃，这就出现了客户端dail成功，而服务端却没有accept。 解决办法：修改服务器内核配置，syn队列上限： /proc/sys/net/core/somaxconn；accept队列上限：/proc/sys/net/ipv4/tcp_max_syn_backlog"/>
+
+
+
+    <link rel="canonical" href="http://edcismybrother.github.io/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">
+
+    <title>
+      
+        tcp长连接压测遇到的问题 | 皮智文的小宝库
+      
+    </title>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
+
+    
+
+    
+
+    
+  </head>
+  <body>
+    
+      <header class="blog-header">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            皮智文的小宝库
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                
+            </ul>
+            
+        </div>
+    </nav>
+</header>
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8 blog-main">
+
+          
+
+<header>
+    <h2 class="blog-post-title">
+        <a class="text-dark" href="/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">tcp长连接压测遇到的问题</a>
+    </h2>
+    
+
+
+<div class="blog-post-date text-secondary">
+    
+        Nov 13, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+    
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+    
+        <a class="badge badge-primary" href="/tags/bug">bug</a>
+    
+</div>
+
+    
+    <hr>
+</header>
+<article class="blog-post">
+    
+
+<h1 id="tcp长连接压测遇到的问题">tcp长连接压测遇到的问题</h1>
+
+<h2 id="问题1-在大量长连接下-会出现很多拨号失败">问题1：在大量长连接下，会出现很多拨号失败。</h2>
+
+<p>、、、
+dial tcp 192.168.31.232:6001:
+connectex: A connection attempt failed because the connected party did not properly respond after a period of time,
+or established connection failed because connected host has failed to respond
+、、、
+拨号失败的问题在于服务端响应不及时
+问题分析：在大量长连接同时请求时，出现了cpu、资源调用阻塞，很多的连接在等待分配
+解决办法：轮询创建客户端加上延时</p>
+
+<h2 id="问题2-部分连接成功的客户端-会在请求的时候得不到相应的响应">问题2：部分连接成功的客户端，会在请求的时候得不到相应的响应</h2>
+
+<p>目前的模拟客户端设置的时1分钟的超时，在5000长连接的压测下，30s的超时设置，会出现n个超时，1分钟的超时设置，超时的客户端会减少
+问题分析：估计也是资源占用造成的问题
+解决办法：加大服务器内核</p>
+
+<h2 id="问题3-部分连接成功的客户端-请求后被告知连接被远程端强制关闭-但服务端却没有主动关闭连接的操作">问题3：部分连接成功的客户端，请求后被告知连接被远程端强制关闭，但服务端却没有主动关闭连接的操作</h2>
+
+<p>客户端已经dial成功，但通过返回的conn进行write和read操作被告知连接强制关闭，但服务端没有任何close迹象
+原因分析：dial是在第二次握手的时候返回conn，而服务端accept是在第三次握手的时候返回conn，也就是说握手只进行到第二次握手，
+这是因为握手的时候有两个队列，一个syn队列一个backlog队列（accept队列），一次握手，cli告诉ser要建立连接，第二次握手，ser通知
+cli等待确认连接，这时连接状态进入syn队列，第三次握手，cli通知ser确认连接，连接状态进入backlog队列。
+以上就是握手的过程，syn和backlog队列有限制，如果在大量并发连接出现，连接数超过backlog的长度的连接，将会阻塞在队列外，一定时间没有进入到backlog队列，连接将会被丢弃，这就出现了客户端dail成功，而服务端却没有accept。
+解决办法：修改服务器内核配置，syn队列上限： /proc/sys/net/core/somaxconn；accept队列上限：/proc/sys/net/ipv4/tcp_max_syn_backlog</p>
+
+
+    
+
+    
+
+    <h4>See also</h4>
+    <ul>
+        
+            <li><a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析---http</a></li>
+        
+            <li><a href="/2018/09/24/tcp/">简单的tcp实例</a></li>
+        
+    </ul>
+
+
+</article>
+
+
+
+        </div>
+
+        <aside class="col-12 col-lg-3 ml-auto blog-sidebar">
+    
+        
+
+
+<section>
+    <h4>Recent Posts</h4>
+    <ol class="list-unstyled">
+        
+        <li>
+            <a href="/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">tcp长连接压测遇到的问题</a>
+        </li>
+        
+        <li>
+            <a href="/colly/">colly源码包分析</a>
+        </li>
+        
+        <li>
+            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </li>
+        
+        <li>
+            <a href="/ssh/">ssh连接</a>
+        </li>
+        
+        <li>
+            <a href="/%E5%B9%B2%E8%B4%A7/">干货达人网址链接</a>
+        </li>
+        
+    </ol>
+</section>
+
+    
+    
+        <section>
+    
+        
+    
+        
+        <h4>Tags</h4>
+        <p>
+            
+            <a class="badge badge-primary" href="/tags/aes">aes</a>
+            
+            <a class="badge badge-primary" href="/tags/bug">bug</a>
+            
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
+            <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
+            
+            <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/ssh">ssh</a>
+            
+            <a class="badge badge-primary" href="/tags/submodule">submodule</a>
+            
+            <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%B9%B2%E8%B4%A7">干货</a>
+            
+            <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+            
+        </p>
+        
+    
+</section>
+    
+</aside>
+
+      </div>
+    </div>
+    
+
+    
+      
+
+
+
+
+
+
+<footer class="blog-footer w-100">
+    <nav class="navbar navbar-light bg-light">
+        <p class="w-100 text-center">Hugo template made with ❤ by <a href="https://github.com/Xzya">Xzya</a>, inspired by <a href="https://github.com/alanorth/hugo-theme-bootstrap4-blog">hugo-theme-bootstrap4-blog</a></p>
+        <p class="w-100 text-center"><a href="#">Back to top</a></p>
+    </nav>
+</footer>
+
+    
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>
