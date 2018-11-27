@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="redis学习" />
+<meta property="og:description" content="redis的四大功能 multi watch discard exec
+multi 词条意思是多、多个，这个命令的用途是用来开启事务的，开启事务后，之后执行的cmd命令，都会进入事务队列，并不会马上执行，只有当执行exec后， 队列中的命令才会按顺序进行，执行顺序是先进队列的先执行。如果有一条命令执行失败，那么整个事务都会失败，事务是原子性的。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; hset go 1 1 //第一条命令 QUEUED 127.0.0.1:6379&gt; hset go 2 2 //第二条命令 QUEUED 127.0.0.1:6379&gt; exec // 执行队列 1) (integer) 0 2) (integer) 1  discard discard是用来取消事务的，当事务还未执行时，想要取消multi的队列，可以用该命令取消，取消后队列中的所有命令都会取消。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; multi //再次开启（失败） (error) ERR MULTI calls can not be nested 127.0.0.1:6379&gt; discard //取消事务 OK  exec exec 如上所说，就是用来执行队列的，与multi组合使用
+watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某一个键，在事务开始前，如果当前监听的键被其他客户端改动，那么整个事务都会失败。
+127.0.0.1:6379&gt; watch go //客户端A监听go OK 127." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://edcismybrother.github.io/redis/" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="redis学习"/>
+<meta name="twitter:description" content="redis的四大功能 multi watch discard exec
+multi 词条意思是多、多个，这个命令的用途是用来开启事务的，开启事务后，之后执行的cmd命令，都会进入事务队列，并不会马上执行，只有当执行exec后， 队列中的命令才会按顺序进行，执行顺序是先进队列的先执行。如果有一条命令执行失败，那么整个事务都会失败，事务是原子性的。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; hset go 1 1 //第一条命令 QUEUED 127.0.0.1:6379&gt; hset go 2 2 //第二条命令 QUEUED 127.0.0.1:6379&gt; exec // 执行队列 1) (integer) 0 2) (integer) 1  discard discard是用来取消事务的，当事务还未执行时，想要取消multi的队列，可以用该命令取消，取消后队列中的所有命令都会取消。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; multi //再次开启（失败） (error) ERR MULTI calls can not be nested 127.0.0.1:6379&gt; discard //取消事务 OK  exec exec 如上所说，就是用来执行队列的，与multi组合使用
+watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某一个键，在事务开始前，如果当前监听的键被其他客户端改动，那么整个事务都会失败。
+127.0.0.1:6379&gt; watch go //客户端A监听go OK 127."/>
+
+
+
+    <link rel="canonical" href="http://edcismybrother.github.io/redis/">
+
+    <title>
+      
+        redis学习 | 皮智文的小宝库
+      
+    </title>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
+
+    
+
+    
+
+    
+  </head>
+  <body>
+    
+      <header class="blog-header">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            皮智文的小宝库
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                
+            </ul>
+            
+        </div>
+    </nav>
+</header>
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8 blog-main">
+
+          
+
+<header>
+    <h2 class="blog-post-title">
+        <a class="text-dark" href="/redis/">redis学习</a>
+    </h2>
+    
+
+
+<div class="blog-post-date text-secondary">
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+    
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/redis">redis</a>
+    
+</div>
+
+    
+    <hr>
+</header>
+<article class="blog-post">
+    
+
+<h1 id="redis的四大功能">redis的四大功能</h1>
+
+<p>multi watch discard exec</p>
+
+<h2 id="multi">multi</h2>
+
+<p>词条意思是多、多个，这个命令的用途是用来开启事务的，开启事务后，之后执行的cmd命令，都会进入事务队列，并不会马上执行，只有当执行exec后，
+队列中的命令才会按顺序进行，执行顺序是先进队列的先执行。如果有一条命令执行失败，那么整个事务都会失败，事务是原子性的。</p>
+
+<pre><code>127.0.0.1:6379&gt; multi //开启事务
+OK
+127.0.0.1:6379&gt;  hset go 1 1 //第一条命令
+QUEUED
+127.0.0.1:6379&gt;  hset go 2 2 //第二条命令
+QUEUED
+127.0.0.1:6379&gt; exec // 执行队列
+1) (integer) 0
+2) (integer) 1
+</code></pre>
+
+<h2 id="discard">discard</h2>
+
+<p>discard是用来取消事务的，当事务还未执行时，想要取消multi的队列，可以用该命令取消，取消后队列中的所有命令都会取消。</p>
+
+<pre><code>127.0.0.1:6379&gt; multi //开启事务
+OK
+127.0.0.1:6379&gt; multi //再次开启（失败）
+(error) ERR MULTI calls can not be nested
+127.0.0.1:6379&gt; discard //取消事务
+OK
+</code></pre>
+
+<h2 id="exec">exec</h2>
+
+<p>exec 如上所说，就是用来执行队列的，与multi组合使用</p>
+
+<h2 id="watch">watch</h2>
+
+<p>监听事务 ，一般和multi、exec混合使用，watch用来监听某一个键，在事务开始前，如果当前监听的键被其他客户端改动，那么整个事务都会失败。</p>
+
+<pre><code>127.0.0.1:6379&gt; watch go //客户端A监听go
+OK
+127.0.0.1:6379&gt; multi //开启事务
+OK
+127.0.0.1:6379&gt; hset go 10 10 //命令放入队列
+QUEUED
+127.0.0.1:6379&gt; exec //执行命令
+(nil)
+127.0.0.1:6379&gt;
+
+---------------------------------------------
+
+127.0.0.1:6379&gt; hset go 11 11 //在客户端A执行exec之前，客户端B执行该命令
+(integer) 1
+</code></pre>
+
+<h1 id="redis命令">redis命令</h1>
+
+<h2 id="set-key-value类型储存">set key-value类型储存</h2>
+
+<pre><code>127.0.0.1:6379&gt; set redis hello
+OK
+-------------------------------
+127.0.0.1:6379&gt; get redis
+&quot;hello&quot;
+</code></pre>
+
+<h2 id="zadd-有序集合">zadd 有序集合</h2>
+
+<pre><code>127.0.0.1:6379&gt; zadd hello 1 china
+(integer) 1
+127.0.0.1:6379&gt; zadd hello 3 go
+(integer) 1
+127.0.0.1:6379&gt; zadd hello 2 golang
+(integer) 1
+-----------------------------------
+127.0.0.1:6379&gt; zrange hello 0 10
+1) &quot;china&quot;
+2) &quot;golang&quot;
+3) &quot;go&quot;
+</code></pre>
+
+<h2 id="sadd-集合">sadd 集合</h2>
+
+<pre><code>127.0.0.1:6379&gt; sadd world A
+(integer) 1
+127.0.0.1:6379&gt; sadd world C
+(integer) 1
+127.0.0.1:6379&gt; sadd world B
+(integer) 1
+----------------------------
+127.0.0.1:6379&gt; smembers world
+1) &quot;B&quot;
+2) &quot;C&quot;
+3) &quot;A&quot;
+</code></pre>
+
+<h2 id="hset-hmset-哈希储存">hset/hmset 哈希储存</h2>
+
+<pre><code>127.0.0.1:6379&gt; hmset routine A a
+OK
+127.0.0.1:6379&gt; hset routine B b
+(integer) 1
+127.0.0.1:6379&gt; hmset routine C c D d
+OK
+-------------------------------------
+127.0.0.1:6379&gt; hget routine A
+&quot;a&quot;
+127.0.0.1:6379&gt; hmget routine A B
+1) &quot;a&quot;
+2) &quot;b&quot;
+127.0.0.1:6379&gt; hgetall routine
+1) &quot;A&quot;
+2) &quot;a&quot;
+3) &quot;B&quot;
+4) &quot;b&quot;
+5) &quot;C&quot;
+6) &quot;c&quot;
+7) &quot;D&quot;
+8) &quot;d&quot;
+</code></pre>
+
+<h2 id="lpush-链表">lpush 链表</h2>
+
+<pre><code>127.0.0.1:6379&gt; lpush hello_world A B
+(integer) 2
+---------------------------------------
+127.0.0.1:6379&gt; lrange hello_world 0 10
+1) &quot;B&quot;
+2) &quot;A&quot;
+</code></pre>
+
+<h1 id="go-redis使用教学">go-redis使用教学</h1>
+
+<h2 id="常规操作">常规操作</h2>
+
+<pre><code>// TestNomarl 常规操作
+func TestNomarl() {
+    client := redis.NewClient(&amp;redis.Options{
+        Addr:     &quot;localhost:6379&quot;,
+        DB:       2,
+        Password: &quot;&quot;,
+    })
+    defer client.Close()
+    client.Set(&quot;hello&quot;, &quot;world&quot;, 0)
+    client.LPush(&quot;list&quot;, &quot;A&quot;)
+    client.ZAdd(&quot;zset&quot;, redis.Z{1, &quot;A&quot;}, redis.Z{2, &quot;B&quot;})
+    client.SAdd(&quot;set&quot;, &quot;A&quot;, &quot;B&quot;)
+    client.HSet(&quot;hashMap&quot;, &quot;key&quot;, &quot;value&quot;)
+    client.HMSet(&quot;hashMap&quot;, map[string]interface{}{&quot;key1&quot;: &quot;value1&quot;, &quot;key2&quot;: &quot;value2&quot;})
+}
+</code></pre>
+
+<h2 id="开启事务">开启事务</h2>
+
+<pre><code>// TestTransaction 事务操作
+func TestTransaction() {
+    client := redis.NewClient(&amp;redis.Options{
+        Addr:     &quot;localhost:6379&quot;,
+        DB:       2,
+        Password: &quot;&quot;,
+    })
+    tx := client.TxPipeline()
+    tx.SAdd(&quot;txset&quot;, &quot;A&quot;)
+    tx.SAdd(&quot;txset&quot;, &quot;B&quot;)
+    cmder, _ := tx.Exec()
+    for _, cmd := range cmder {
+        fmt.Println(cmd)
+    }
+}
+</code></pre>
+
+<p>go-redis的事务是通过管道实现的，也就是TxPipeline</p>
+
+<pre><code>func txPipelineWriteMulti(wr *proto.Writer, cmds []Cmder) error {
+    multiExec := make([]Cmder, 0, len(cmds)+2)
+    multiExec = append(multiExec, NewStatusCmd(&quot;MULTI&quot;))
+    multiExec = append(multiExec, cmds...)
+    multiExec = append(multiExec, NewSliceCmd(&quot;EXEC&quot;))
+    return writeCmd(wr, multiExec...)
+}
+</code></pre>
+
+<p>go-redis管道分事务版本和普通管道，普通管道是将所有命令放入管道中，让管道按顺序执行命令，这个和常规操作造成的结果是一样，只不过前者是调用者一个个去执行，而后者是调用者将命令交给管道，让管道去一个个执行。
+事务管道则是，在命令之前加上一条multi命令,最后加一条exec命令用来开启事务</p>
+
+<h2 id="watch监听">watch监听</h2>
+
+<p>当事务还未执行之前,被监听的key被其他的客户端修改，当前事务就会fail，如果在监听期间key没有被修改过，那么事务就会成功</p>
+
+<pre><code>// TestWatch 监听关键字
+func TestWatch() {
+    key := &quot;watch&quot;
+    client := redis.NewClient(&amp;redis.Options{
+        Addr:     &quot;localhost:6379&quot;,
+        DB:       2,
+        Password: &quot;&quot;,
+    })
+    client1 := redis.NewClient(&amp;redis.Options{
+        Addr:     &quot;localhost:6379&quot;,
+        DB:       2,
+        Password: &quot;&quot;,
+    })
+    err := client.Watch(func(tx *redis.Tx) error {
+        pipe := tx.TxPipeline()
+        var err error
+        pipe.HSet(key, &quot;haha&quot;, &quot;hehe&quot;)
+        pipe.HSet(key, &quot;hehe&quot;, &quot;haha&quot;)
+        client1.HSet(key, &quot;huhu&quot;, &quot;huhu&quot;)
+        _, err = pipe.Exec()
+        return err
+    }, key)
+    fmt.Println(err)
+}
+</code></pre>
+
+<h1 id="go-redis-代码阅读">go-redis 代码阅读</h1>
+
+<p>其实就是通过tcp连接上redis服务端，然后io.write命令到服务端</p>
+
+<pre><code>
+</code></pre>
+
+<p>为了避免反复打开创建tcp连接，go-redis引入了连接池的概念
+go-redis的池会有一个连接池（conns）、一个有效连接池（idleConns）、一个连接池上限（PoolSize）的重要概念
+连接池不需要关心单个连接的关闭，与创建，通过外部调用p.getConn(),即可获取一个可用的连接。
+设计原理：当连接池未达到上限的时候，且idleconns中无可用连接时，将会创建一个conn，并且执行相关cmd，执行完成后，conn同步放进idleConns池中
+当idleconns中有值，直接从末端拿出一个使用，使用完后，放入末端。
+当连接数conns的数量达到上限时，且没有可用idleconn，将会创建一个conn，并且在执行完cmd后进行销毁。</p>
+
+
+    
+
+    
+
+
+</article>
+
+
+
+        </div>
+
+        <aside class="col-12 col-lg-3 ml-auto blog-sidebar">
+    
+        
+
+
+<section>
+    <h4>Recent Posts</h4>
+    <ol class="list-unstyled">
+        
+        <li>
+            <a href="/tcp/sync/">tcp异步</a>
+        </li>
+        
+        <li>
+            <a href="/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">tcp长连接压测遇到的问题</a>
+        </li>
+        
+        <li>
+            <a href="/colly/">colly源码包分析</a>
+        </li>
+        
+        <li>
+            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
+        </li>
+        
+        <li>
+            <a href="/ssh/">ssh连接</a>
+        </li>
+        
+    </ol>
+</section>
+
+    
+    
+        <section>
+    
+        
+    
+        
+        <h4>Tags</h4>
+        <p>
+            
+            <a class="badge badge-primary" href="/tags/aes">aes</a>
+            
+            <a class="badge badge-primary" href="/tags/async">async</a>
+            
+            <a class="badge badge-primary" href="/tags/bug">bug</a>
+            
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
+            <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
+            
+            <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/redis">redis</a>
+            
+            <a class="badge badge-primary" href="/tags/ssh">ssh</a>
+            
+            <a class="badge badge-primary" href="/tags/submodule">submodule</a>
+            
+            <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%B9%B2%E8%B4%A7">干货</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%BC%82%E6%AD%A5">异步</a>
+            
+            <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+            
+        </p>
+        
+    
+</section>
+    
+</aside>
+
+      </div>
+    </div>
+    
+
+    
+      
+
+
+
+
+
+
+<footer class="blog-footer w-100">
+    <nav class="navbar navbar-light bg-light">
+        <p class="w-100 text-center">Hugo template made with ❤ by <a href="https://github.com/Xzya">Xzya</a>, inspired by <a href="https://github.com/alanorth/hugo-theme-bootstrap4-blog">hugo-theme-bootstrap4-blog</a></p>
+        <p class="w-100 text-center"><a href="#">Back to top</a></p>
+    </nav>
+</footer>
+
+    
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>

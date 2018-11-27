@@ -332,6 +332,49 @@ git branch -f master HEAD git checkout master  相关网页
 
 
 
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/redis/">redis学习</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/redis">redis</a>
+    
+</div>
+
+        
+    </header>
+    redis的四大功能 multi watch discard exec
+multi 词条意思是多、多个，这个命令的用途是用来开启事务的，开启事务后，之后执行的cmd命令，都会进入事务队列，并不会马上执行，只有当执行exec后， 队列中的命令才会按顺序进行，执行顺序是先进队列的先执行。如果有一条命令执行失败，那么整个事务都会失败，事务是原子性的。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; hset go 1 1 //第一条命令 QUEUED 127.0.0.1:6379&gt; hset go 2 2 //第二条命令 QUEUED 127.0.0.1:6379&gt; exec // 执行队列 1) (integer) 0 2) (integer) 1  discard discard是用来取消事务的，当事务还未执行时，想要取消multi的队列，可以用该命令取消，取消后队列中的所有命令都会取消。
+127.0.0.1:6379&gt; multi //开启事务 OK 127.0.0.1:6379&gt; multi //再次开启（失败） (error) ERR MULTI calls can not be nested 127.0.0.1:6379&gt; discard //取消事务 OK  exec exec 如上所说，就是用来执行队列的，与multi组合使用
+watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某一个键，在事务开始前，如果当前监听的键被其他客户端改动，那么整个事务都会失败。
+127.0.0.1:6379&gt; watch go //客户端A监听go OK 127.
+    
+    <p></p>
+    <a href="/redis/">Read More →</a>
+    
+</article>
+
+
+    
+
+
+
 
 
 <nav class="blog-pagination">
@@ -443,6 +486,8 @@ git branch -f master HEAD git checkout master  相关网页
             <a class="badge badge-primary" href="/tags/http">http</a>
             
             <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/redis">redis</a>
             
             <a class="badge badge-primary" href="/tags/ssh">ssh</a>
             
