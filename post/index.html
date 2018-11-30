@@ -9,7 +9,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/post/" />
-<meta property="og:updated_time" content="2018-11-14T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-11-30T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
@@ -68,6 +68,53 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/redis/cluster/">redis集群学习</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Nov 30, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/redis">redis</a>
+    
+        <a class="badge badge-primary" href="/tags/cluster">cluster</a>
+    
+</div>
+
+        
+    </header>
+    redis集群部署运行 以window为例子
+首先修改配置文件 redis-cluster.conf
+1、配置文件需要配置持久化类型，这里选择aof appendonly yes // 开启aof模式 appendfilename &quot;appendonly.7001.aof&quot; // aof名字 2、集群启动配置 cluster-enabled yes // 允许集群 cluster-config-file nodes-7001.conf // 集群配置文件，运行后自动生成 cluster-node-timeout 15000 // 集群节点响应超时  运行实例 进入redis目录下，运行redis-server.exe ./{&ldquo;配置文件路径&rdquo;}/name.conf 需要几个节点，就创建几个redis相关的配置文件，一般来说至少需要要3个master节点，每个主节点需要至少一个slave节点，因此至少需要6个节点 运行成功后只能算是开启了6个redis服务端，还不是集群
+关联服务 6个服务端实例有了，就需要关联起来，通过使用 Redis 集群命令行工具 redis-trib 可以进行便携操作。 trib在redis源码中trib地址,将redis-trib.rb文件放到redis安装目录下。 trib是rb（rubby）类型文件，所以需要安装rubby运行环境,rubby安装地址。 在rubby目录下，安装redis驱动：gem install redis redis目录下运行:./redis-trib.rb create &ndash;replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005。
+此时如果出现如下响应，表示集群关联成功。 Can I set the above configuration? (type &lsquo;yes&rsquo; to accept): yes（这里输入yes表示同意设置）
+C:\Program Files\Redis&gt;redis-trib.rb create --replicas 1 127.
+    
+    <p></p>
+    <a href="/redis/cluster/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -449,52 +496,6 @@ github上优秀的储存框架
 
 
 
-    
-        <article class="blog-post">
-    <header>
-        <h2 class="blog-post-title">
-            <a class="text-dark" href="/decimal/">进制学习</a>
-        </h2>
-        
-
-
-<div class="blog-post-date text-secondary">
-    
-        Sep 29, 2018
-    
-    
-        by <span rel="author">皮智文</span>
-    
-</div>
-
-        
-<div class="blog-post-tags text-secondary">
-    <strong>Tags:</strong>
-    
-        <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
-    
-</div>
-
-        
-    </header>
-    进制对应的英文 name 中文名 含义 举例（以十进制为标准，10的转换） binary 二进制 满2进1 1010 Octal 八进制 满8进1 12 Decimal 十进制 满10进1 10 Hex 十六进制 满16进1 a  进制转换在线工具
-golang中进制之间的相互转换 首先看看go自带的包  &ldquo;encoding/hex&rdquo; &ldquo;encoding/binary&rdquo;
- 重点分析 2、10、16进制之间的相互转换
-hex 分析 func Encode(dst, src []byte) int { for i, v := range src { dst[i*2] = hextable[v&gt;&gt;4] dst[i*2+1] = hextable[v&amp;0x0f] } return len(src) * 2 }  Encode函数将src目标字节数组，转换成16进制形式的dst字节数组，数组长度翻倍
-原理：将原来用一个字节表示的内容，用两个字节来表示，所以返回的dst是src的两倍长度
-将原字节右移4位，得到高位内容(ascii码)，放在第一个字节，原字节与0000 1111与,得到低位内容(ascii码)，放到第二字节
-func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)/2; i++ { a, ok := fromHexChar(src[i*2]) if !
-    
-    <p></p>
-    <a href="/decimal/">Read More →</a>
-    
-</article>
-
-
-    
-
-
-
 
 
 <nav class="blog-pagination">
@@ -561,6 +562,10 @@ func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)
     <ol class="list-unstyled">
         
         <li>
+            <a href="/redis/cluster/">redis集群学习</a>
+        </li>
+        
+        <li>
             <a href="/tcp/sync/">tcp异步</a>
         </li>
         
@@ -574,10 +579,6 @@ func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)
         
         <li>
             <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
-        </li>
-        
-        <li>
-            <a href="/ssh/">ssh连接</a>
         </li>
         
     </ol>
@@ -598,6 +599,8 @@ func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)
             <a class="badge badge-primary" href="/tags/async">async</a>
             
             <a class="badge badge-primary" href="/tags/bug">bug</a>
+            
+            <a class="badge badge-primary" href="/tags/cluster">cluster</a>
             
             <a class="badge badge-primary" href="/tags/db">db</a>
             

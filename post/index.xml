@@ -6,10 +6,24 @@
     <description>Recent content in Posts on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
-    <lastBuildDate>Wed, 14 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://edcismybrother.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>redis集群学习</title>
+      <link>http://edcismybrother.github.io/redis/cluster/</link>
+      <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/redis/cluster/</guid>
+      <description>redis集群部署运行 以window为例子
+首先修改配置文件 redis-cluster.conf
+1、配置文件需要配置持久化类型，这里选择aof appendonly yes // 开启aof模式 appendfilename &amp;quot;appendonly.7001.aof&amp;quot; // aof名字 2、集群启动配置 cluster-enabled yes // 允许集群 cluster-config-file nodes-7001.conf // 集群配置文件，运行后自动生成 cluster-node-timeout 15000 // 集群节点响应超时  运行实例 进入redis目录下，运行redis-server.exe ./{&amp;ldquo;配置文件路径&amp;rdquo;}/name.conf 需要几个节点，就创建几个redis相关的配置文件，一般来说至少需要要3个master节点，每个主节点需要至少一个slave节点，因此至少需要6个节点 运行成功后只能算是开启了6个redis服务端，还不是集群
+关联服务 6个服务端实例有了，就需要关联起来，通过使用 Redis 集群命令行工具 redis-trib 可以进行便携操作。 trib在redis源码中trib地址,将redis-trib.rb文件放到redis安装目录下。 trib是rb（rubby）类型文件，所以需要安装rubby运行环境,rubby安装地址。 在rubby目录下，安装redis驱动：gem install redis redis目录下运行:./redis-trib.rb create &amp;ndash;replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005。
+此时如果出现如下响应，表示集群关联成功。 Can I set the above configuration? (type &amp;lsquo;yes&amp;rsquo; to accept): yes（这里输入yes表示同意设置）
+C:\Program Files\Redis&amp;gt;redis-trib.rb create --replicas 1 127.</description>
+    </item>
     
     <item>
       <title>tcp异步</title>

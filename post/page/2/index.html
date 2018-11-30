@@ -9,7 +9,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/post/" />
-<meta property="og:updated_time" content="2018-09-28T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-09-29T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
@@ -68,6 +68,52 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/decimal/">进制学习</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Sep 29, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+    
+</div>
+
+        
+    </header>
+    进制对应的英文 name 中文名 含义 举例（以十进制为标准，10的转换） binary 二进制 满2进1 1010 Octal 八进制 满8进1 12 Decimal 十进制 满10进1 10 Hex 十六进制 满16进1 a  进制转换在线工具
+golang中进制之间的相互转换 首先看看go自带的包  &ldquo;encoding/hex&rdquo; &ldquo;encoding/binary&rdquo;
+ 重点分析 2、10、16进制之间的相互转换
+hex 分析 func Encode(dst, src []byte) int { for i, v := range src { dst[i*2] = hextable[v&gt;&gt;4] dst[i*2+1] = hextable[v&amp;0x0f] } return len(src) * 2 }  Encode函数将src目标字节数组，转换成16进制形式的dst字节数组，数组长度翻倍
+原理：将原来用一个字节表示的内容，用两个字节来表示，所以返回的dst是src的两倍长度
+将原字节右移4位，得到高位内容(ascii码)，放在第一个字节，原字节与0000 1111与,得到低位内容(ascii码)，放到第二字节
+func Decode(dst, src []byte) (int, error) { var i int for i = 0; i &lt; len(src)/2; i++ { a, ok := fromHexChar(src[i*2]) if !
+    
+    <p></p>
+    <a href="/decimal/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -440,6 +486,10 @@ watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某�
     <ol class="list-unstyled">
         
         <li>
+            <a href="/redis/cluster/">redis集群学习</a>
+        </li>
+        
+        <li>
             <a href="/tcp/sync/">tcp异步</a>
         </li>
         
@@ -453,10 +503,6 @@ watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某�
         
         <li>
             <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
-        </li>
-        
-        <li>
-            <a href="/ssh/">ssh连接</a>
         </li>
         
     </ol>
@@ -477,6 +523,8 @@ watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某�
             <a class="badge badge-primary" href="/tags/async">async</a>
             
             <a class="badge badge-primary" href="/tags/bug">bug</a>
+            
+            <a class="badge badge-primary" href="/tags/cluster">cluster</a>
             
             <a class="badge badge-primary" href="/tags/db">db</a>
             

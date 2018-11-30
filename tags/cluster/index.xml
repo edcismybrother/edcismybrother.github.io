@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Redis on 皮智文的小宝库</title>
-    <link>http://edcismybrother.github.io/tags/redis/</link>
-    <description>Recent content in Redis on 皮智文的小宝库</description>
+    <title>Cluster on 皮智文的小宝库</title>
+    <link>http://edcismybrother.github.io/tags/cluster/</link>
+    <description>Recent content in Cluster on 皮智文的小宝库</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>utf-8</language>
     <lastBuildDate>Fri, 30 Nov 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://edcismybrother.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://edcismybrother.github.io/tags/cluster/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -23,20 +23,6 @@
 关联服务 6个服务端实例有了，就需要关联起来，通过使用 Redis 集群命令行工具 redis-trib 可以进行便携操作。 trib在redis源码中trib地址,将redis-trib.rb文件放到redis安装目录下。 trib是rb（rubby）类型文件，所以需要安装rubby运行环境,rubby安装地址。 在rubby目录下，安装redis驱动：gem install redis redis目录下运行:./redis-trib.rb create &amp;ndash;replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005。
 此时如果出现如下响应，表示集群关联成功。 Can I set the above configuration? (type &amp;lsquo;yes&amp;rsquo; to accept): yes（这里输入yes表示同意设置）
 C:\Program Files\Redis&amp;gt;redis-trib.rb create --replicas 1 127.</description>
-    </item>
-    
-    <item>
-      <title>redis学习</title>
-      <link>http://edcismybrother.github.io/redis/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://edcismybrother.github.io/redis/</guid>
-      <description>redis的四大功能 multi watch discard exec
-multi 词条意思是多、多个，这个命令的用途是用来开启事务的，开启事务后，之后执行的cmd命令，都会进入事务队列，并不会马上执行，只有当执行exec后， 队列中的命令才会按顺序进行，执行顺序是先进队列的先执行。如果有一条命令执行失败，那么整个事务都会失败，事务是原子性的。
-127.0.0.1:6379&amp;gt; multi //开启事务 OK 127.0.0.1:6379&amp;gt; hset go 1 1 //第一条命令 QUEUED 127.0.0.1:6379&amp;gt; hset go 2 2 //第二条命令 QUEUED 127.0.0.1:6379&amp;gt; exec // 执行队列 1) (integer) 0 2) (integer) 1  discard discard是用来取消事务的，当事务还未执行时，想要取消multi的队列，可以用该命令取消，取消后队列中的所有命令都会取消。
-127.0.0.1:6379&amp;gt; multi //开启事务 OK 127.0.0.1:6379&amp;gt; multi //再次开启（失败） (error) ERR MULTI calls can not be nested 127.0.0.1:6379&amp;gt; discard //取消事务 OK  exec exec 如上所说，就是用来执行队列的，与multi组合使用
-watch 监听事务 ，一般和multi、exec混合使用，watch用来监听某一个键，在事务开始前，如果当前监听的键被其他客户端改动，那么整个事务都会失败。
-127.0.0.1:6379&amp;gt; watch go //客户端A监听go OK 127.</description>
     </item>
     
   </channel>

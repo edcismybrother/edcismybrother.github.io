@@ -5,22 +5,22 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta property="og:title" content="Async" />
+<meta property="og:title" content="Cluster" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://edcismybrother.github.io/tags/async/" />
-<meta property="og:updated_time" content="2018-11-14T00:00:00&#43;00:00"/>
+<meta property="og:url" content="http://edcismybrother.github.io/tags/cluster/" />
+<meta property="og:updated_time" content="2018-11-30T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Async"/>
+<meta name="twitter:title" content="Cluster"/>
 <meta name="twitter:description" content=""/>
 
 
 
-    <link rel="canonical" href="http://edcismybrother.github.io/tags/async/">
+    <link rel="canonical" href="http://edcismybrother.github.io/tags/cluster/">
 
     <title>
       
-        Async | 皮智文的小宝库
+        Cluster | 皮智文的小宝库
       
     </title>
 
@@ -30,7 +30,7 @@
     <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
 
     
-    <link href="http://edcismybrother.github.io/tags/async/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
+    <link href="http://edcismybrother.github.io/tags/cluster/index.xml" rel="alternate" type="application/rss+xml" title="皮智文的小宝库" />
     
 
     
@@ -75,14 +75,14 @@
         <article class="blog-post">
     <header>
         <h2 class="blog-post-title">
-            <a class="text-dark" href="/tcp/sync/">tcp异步</a>
+            <a class="text-dark" href="/redis/cluster/">redis集群学习</a>
         </h2>
         
 
 
 <div class="blog-post-date text-secondary">
     
-        Nov 14, 2018
+        Nov 30, 2018
     
     
         by <span rel="author">皮智文</span>
@@ -93,28 +93,23 @@
 <div class="blog-post-tags text-secondary">
     <strong>Tags:</strong>
     
-        <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+        <a class="badge badge-primary" href="/tags/redis">redis</a>
     
-        <a class="badge badge-primary" href="/tags/%E5%BC%82%E6%AD%A5">异步</a>
-    
-        <a class="badge badge-primary" href="/tags/async">async</a>
+        <a class="badge badge-primary" href="/tags/cluster">cluster</a>
     
 </div>
 
         
     </header>
-    tcp异步框架学习 tao框架 evio框架
-什么是同步异步 先讲讲同步，同步可以理解为串行，100个人要进入一个空间，可空间入口只有一个，这时候，人们只能排队进入，假设一个人进入需要费时1秒，100个就是100秒，人越多，效率就越低；这时候要解决效率的问题就需要用到异步了。 异步可以理解为并行，为每一个人开辟一个入口，这时候有n个人就会有n个入口，进入的时间永远就只需一秒，这样效率就大大提高了。
-异步加锁的必要性 异步解决了进入效率的问题，但人们进入房间是需要做事情的，如果这个事件只是记忆某样东西，不对这个东西进行改变，这时候就没必要加锁，假如空间里面有一堆糖果，100个人里面有50个人的任务只是进来数当前糖果的，这时候就没必要加锁了，而另外50个人的任务是拿糖果，这就有必要加锁了。拿糖果这个任务可以分为两个步骤，先确认是否有糖果，有的话才拿，如果AB两个人通过要执行拿糖果的，AB都确认了有糖果，可是B比A手速要快，先一步把糖果全部拿走了，A再去拿的时候就拿不到了，这时候A的逻辑就会出问题了，他就会一直在那里拿糖果（可永远没有拿到的可能），但是加了锁就不一样了，锁相当于一个闸门，上锁后，只有一个人可以执行任务，其他人只能等待上个人执行完解锁后才能继续去抢锁执行任务。
-线程池的概念 异步解决了效率的问题，使空间不再拥堵，但空间再大也会有上限，可是想要进入空间做事情的人是没有上限的，假设这个空间人气很高，一个庞大的人流量都想要进入这个空间做事，如果说为每个人都开辟一个通道，这时候这个空间将面临千疮百孔，濒临崩溃的局面。也许空间加糖果的例子可能还是有点抽象了，这里以银行为例子，银行相当于空间，每一个窗口相当于一个通道，事件相当于不同的业务，在人多的情况下，窗口越多，办理业务的效率也就越高，而对于银行来说，窗口也是有上限的，而且每开一个窗口都需要消耗一定资源（给窗口业务员发工资、窗口设备维护等等）。
-线程池的具体设计 上面有提到过无限开启窗口的确定，就是资源消耗的递增，假设银行只有在每个月的最后一天人流量会暴增，为了这一天开启了很多个窗口来提高效率，可是其他的时间里，平均人流量很小，一到两个窗口就能应付，这时候其他的窗口就会无比空闲，假设你是一个精打细算的银行老板，你会容忍其他窗口的无所事事么，要知道维护这些空闲窗口是需要消耗的。 1. 设定一个合理的窗口数，不要为每一个人都开一个窗口，人多的话还是要进行排队，银行就是这样的。。。 2. 合理的窗口数虽然减少了开销，但是作为一个一毛不拔的我，还是觉得浪费了，毕竟在人流量极少的情况下，还是会有无所事事的窗口，这个时候就需要动态的增删窗口了；人流量小的时候，无所事事的窗口关闭，人流量多的时候，增加窗口，极多的时候，那就排队吧。
-回归语言 任何事物都是讲究逻辑性的，语言也是符合上面两个例子的逻辑。空间、银行这些都可以看做我们的服务端，而来办理业务的人就是各种携带事件的tcp请求，而窗口就是routine（类型java线程，但比线程的创建消耗要小很多），业务就是你通过routine要异步处理的携带事件。
-好的异步协程池 ants框架就是一个非常好用的，对上述所说的动态删减routine，控制routine上限，异步处理事件都有非常好的实现
-以下就是个人参考ants框架的举例逻辑实现
-// 主函数，模拟1000个事件，交给线程池异步处理，p就是协程池，限制上限10，通过push函数将任何丢到通道中 func main() { for i := 0; i &lt; 1000; i++ { // time.Sleep(2 * time.Millisecond) p.push(Msg{ from: uint64(i), data: &quot;haha&quot;, }) } fmt.Println(&quot;参与的worker数量：&quot;, len(p.workers)) time.Sleep(1 * time.Second) }  //这里的push函数，导致的实际效果是每次是放一个事件进来等待空闲routine进行处理，一对多 //而ants作者的逻辑效果是一群事件在那里等待争抢空闲routine，多对多 //从逻辑性来开ants作者的逻辑效率会更高 type Pool struct { max uint64 workers []*Worker //存放工作者 chl chan Msg lock sync.
+    redis集群部署运行 以window为例子
+首先修改配置文件 redis-cluster.conf
+1、配置文件需要配置持久化类型，这里选择aof appendonly yes // 开启aof模式 appendfilename &quot;appendonly.7001.aof&quot; // aof名字 2、集群启动配置 cluster-enabled yes // 允许集群 cluster-config-file nodes-7001.conf // 集群配置文件，运行后自动生成 cluster-node-timeout 15000 // 集群节点响应超时  运行实例 进入redis目录下，运行redis-server.exe ./{&ldquo;配置文件路径&rdquo;}/name.conf 需要几个节点，就创建几个redis相关的配置文件，一般来说至少需要要3个master节点，每个主节点需要至少一个slave节点，因此至少需要6个节点 运行成功后只能算是开启了6个redis服务端，还不是集群
+关联服务 6个服务端实例有了，就需要关联起来，通过使用 Redis 集群命令行工具 redis-trib 可以进行便携操作。 trib在redis源码中trib地址,将redis-trib.rb文件放到redis安装目录下。 trib是rb（rubby）类型文件，所以需要安装rubby运行环境,rubby安装地址。 在rubby目录下，安装redis驱动：gem install redis redis目录下运行:./redis-trib.rb create &ndash;replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005。
+此时如果出现如下响应，表示集群关联成功。 Can I set the above configuration? (type &lsquo;yes&rsquo; to accept): yes（这里输入yes表示同意设置）
+C:\Program Files\Redis&gt;redis-trib.rb create --replicas 1 127.
     
     <p></p>
-    <a href="/tcp/sync/">Read More →</a>
+    <a href="/redis/cluster/">Read More →</a>
     
 </article>
 

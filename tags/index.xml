@@ -39,6 +39,15 @@
     </item>
     
     <item>
+      <title>Cluster</title>
+      <link>http://edcismybrother.github.io/tags/cluster/</link>
+      <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/tags/cluster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Db</title>
       <link>http://edcismybrother.github.io/tags/db/</link>
       <pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate>
@@ -77,7 +86,7 @@
     <item>
       <title>Redis</title>
       <link>http://edcismybrother.github.io/tags/redis/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>http://edcismybrother.github.io/tags/redis/</guid>
       <description></description>
