@@ -9,7 +9,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://edcismybrother.github.io/post/" />
-<meta property="og:updated_time" content="2018-11-30T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2018-12-12T00:00:00&#43;00:00"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
@@ -68,6 +68,49 @@
 
 
 
+
+
+
+    
+        <article class="blog-post">
+    <header>
+        <h2 class="blog-post-title">
+            <a class="text-dark" href="/bfs/">广度优先搜索</a>
+        </h2>
+        
+
+
+<div class="blog-post-date text-secondary">
+    
+        Dec 12, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+        
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E9%80%92%E5%BD%92">递归</a>
+    
+        <a class="badge badge-primary" href="/tags/%E7%AE%97%E6%B3%95">算法</a>
+    
+</div>
+
+        
+    </header>
+    麻将胡牌算法（包括查听，查胡）
+package main import ( &quot;fmt&quot; ) func main() { list := []int{11, 12, 13, 14, 14, 15, 16, 12} // lists := combination(list, []int{}) // for k, l := range lists { // fmt.Printf(&quot;组合:%v===&quot;, k) // for _, c := range l.combin { // fmt.Printf(&quot;类型：%v 值：%v;&quot;, c.tp, c.values) // } // fmt.Println() // } m := outTS(list) for k, v := range m { fmt.Printf(&quot;打出:%v,可以胡%v\n&quot;, k, v) } } func outTS(list []int) map[int][]int { var ts = make(map[int][]int, 0) out := make([]int, 0) if len(list)%3 !
+    
+    <p></p>
+    <a href="/bfs/">Read More →</a>
+    
+</article>
+
+
+    
 
 
 
@@ -456,46 +499,6 @@ github上优秀的储存框架
 
 
 
-    
-        <article class="blog-post">
-    <header>
-        <h2 class="blog-post-title">
-            <a class="text-dark" href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">占位符</a>
-        </h2>
-        
-
-
-<div class="blog-post-date text-secondary">
-    
-        Sep 29, 2018
-    
-    
-        by <span rel="author">皮智文</span>
-    
-</div>
-
-        
-<div class="blog-post-tags text-secondary">
-    <strong>Tags:</strong>
-    
-        <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
-    
-</div>
-
-        
-    </header>
-    普通占位符 占位符 说明 举例 输出 %v 相应值的默认格式。 Printf(&quot;%v&quot;, people) {zhangsan}， %+v 打印结构体时，会添加字段名 Printf(&quot;%+v&quot;, people) {Name:zhangsan} %#v 相应值的Go语法表示 Printf(&quot;#v&quot;, people) main.Human{Name:&quot;zhangsan&quot;} %T 相应值的类型的Go语法表示 Printf(&quot;%T&quot;, people) main.Human %% 字面上的百分号，并非值的占位符 Printf(&quot;%%&quot;) %  布尔占位符 占位符 说明 举例 输出 %t true 或 false。 Printf(&quot;%t&quot;, true) true  整数占位符 占位符 说明 举例 输出 %b 二进制表示 Printf(&quot;%b&quot;, 5) 101 %c 相应Unicode码点所表示的字符 Printf(&quot;%c&quot;, 0x4E2D) 中 %d 十进制表示 Printf(&quot;%d&quot;, 0x12) 18 %o 八进制表示 Printf(&quot;%d&quot;, 10) 12 %q 单引号围绕的字符字面值，由Go语法安全地转义 Printf(&quot;%q&quot;, 0x4E2D) '中' %x 十六进制表示，字母形式为小写 a-f Printf(&quot;%x&quot;, 13) d %X 十六进制表示，字母形式为大写 A-F Printf(&quot;%x&quot;, 13) D %U Unicode格式：U+1234，等同于 &quot;U+%04X&quot; Printf(&quot;%U&quot;, 0x4E2D) U+4E2D  浮点数和复数的组成部分（实部和虚部） 占位符 说明 举例 输出 %b 无小数部分的，指数为二的幂的科学计数法， 与 strconv.
-    
-    <p></p>
-    <a href="/%E5%8D%A0%E4%BD%8D%E7%AC%A6/">Read More →</a>
-    
-</article>
-
-
-    
-
-
-
 
 
 <nav class="blog-pagination">
@@ -562,6 +565,10 @@ github上优秀的储存框架
     <ol class="list-unstyled">
         
         <li>
+            <a href="/bfs/">广度优先搜索</a>
+        </li>
+        
+        <li>
             <a href="/redis/cluster/">redis集群学习</a>
         </li>
         
@@ -575,10 +582,6 @@ github上优秀的储存框架
         
         <li>
             <a href="/colly/">colly源码包分析</a>
-        </li>
-        
-        <li>
-            <a href="/tcp/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">golang标准包分析&mdash;http</a>
         </li>
         
     </ol>
@@ -636,11 +639,15 @@ github上优秀的储存框架
             
             <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
             
+            <a class="badge badge-primary" href="/tags/%E7%AE%97%E6%B3%95">算法</a>
+            
             <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
             
             <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
             
             <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+            
+            <a class="badge badge-primary" href="/tags/%E9%80%92%E5%BD%92">递归</a>
             
         </p>
         

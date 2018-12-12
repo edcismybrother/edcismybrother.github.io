@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="广度优先搜索" />
+<meta property="og:description" content="麻将胡牌算法（包括查听，查胡）
+package main import ( &quot;fmt&quot; ) func main() { list := []int{11, 12, 13, 14, 14, 15, 16, 12} // lists := combination(list, []int{}) // for k, l := range lists { // fmt.Printf(&quot;组合:%v===&quot;, k) // for _, c := range l.combin { // fmt.Printf(&quot;类型：%v 值：%v;&quot;, c.tp, c.values) // } // fmt.Println() // } m := outTS(list) for k, v := range m { fmt.Printf(&quot;打出:%v,可以胡%v\n&quot;, k, v) } } func outTS(list []int) map[int][]int { var ts = make(map[int][]int, 0) out := make([]int, 0) if len(list)%3 !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://edcismybrother.github.io/bfs/" /><meta property="article:published_time" content="2018-12-12T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-12-12T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="广度优先搜索"/>
+<meta name="twitter:description" content="麻将胡牌算法（包括查听，查胡）
+package main import ( &quot;fmt&quot; ) func main() { list := []int{11, 12, 13, 14, 14, 15, 16, 12} // lists := combination(list, []int{}) // for k, l := range lists { // fmt.Printf(&quot;组合:%v===&quot;, k) // for _, c := range l.combin { // fmt.Printf(&quot;类型：%v 值：%v;&quot;, c.tp, c.values) // } // fmt.Println() // } m := outTS(list) for k, v := range m { fmt.Printf(&quot;打出:%v,可以胡%v\n&quot;, k, v) } } func outTS(list []int) map[int][]int { var ts = make(map[int][]int, 0) out := make([]int, 0) if len(list)%3 !"/>
+
+
+
+    <link rel="canonical" href="http://edcismybrother.github.io/bfs/">
+
+    <title>
+      
+        广度优先搜索 | 皮智文的小宝库
+      
+    </title>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <link href="http://edcismybrother.github.io/css/style.css" rel="stylesheet">
+
+    
+
+    
+
+    
+  </head>
+  <body>
+    
+      <header class="blog-header">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            皮智文的小宝库
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                
+            </ul>
+            
+        </div>
+    </nav>
+</header>
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8 blog-main">
+
+          
+
+<header>
+    <h2 class="blog-post-title">
+        <a class="text-dark" href="/bfs/">广度优先搜索</a>
+    </h2>
+    
+
+
+<div class="blog-post-date text-secondary">
+    
+        Dec 12, 2018
+    
+    
+        by <span rel="author">皮智文</span>
+    
+</div>
+
+    
+<div class="blog-post-tags text-secondary">
+    <strong>Tags:</strong>
+    
+        <a class="badge badge-primary" href="/tags/%E9%80%92%E5%BD%92">递归</a>
+    
+        <a class="badge badge-primary" href="/tags/%E7%AE%97%E6%B3%95">算法</a>
+    
+</div>
+
+    
+    <hr>
+</header>
+<article class="blog-post">
+    <p>麻将胡牌算法（包括查听，查胡）</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func main() {
+    list := []int{11, 12, 13, 14, 14, 15, 16, 12}
+    // lists := combination(list, []int{})
+    // for k, l := range lists {
+    //  fmt.Printf(&quot;组合:%v===&quot;, k)
+    //  for _, c := range l.combin {
+    //      fmt.Printf(&quot;类型：%v 值：%v;&quot;, c.tp, c.values)
+    //  }
+    //  fmt.Println()
+    // }
+
+    m := outTS(list)
+    for k, v := range m {
+        fmt.Printf(&quot;打出:%v,可以胡%v\n&quot;, k, v)
+    }
+}
+
+func outTS(list []int) map[int][]int {
+    var ts = make(map[int][]int, 0)
+    out := make([]int, 0)
+    if len(list)%3 != 2 {
+        return ts
+    }
+    for k, v := range list {
+        if v == 0 {
+            continue
+        }
+        if exist(v, out) {
+            continue
+        }
+        out = append(out, v)
+        cpl := make([]int, len(list))
+        copy(cpl, list)
+        cpl = append(cpl[:k], cpl[k+1:]...)
+        possbileCanHu := make([]int, 0)
+        allPossbile := combination(cpl, []int{0})
+
+        for _, possbilehu := range allPossbile {
+            for _, comb := range possbilehu.combin {
+                possbileCanHu = addtingCard(possbileCanHu, comb.laizitobe)
+            }
+        }
+        if len(possbileCanHu) &gt; 0 {
+            ts[v] = possbileCanHu
+        }
+    }
+    return ts
+}
+
+func addtingCard(src, dst []int) []int {
+    for _, d := range dst {
+        if !contain(src, d) {
+            src = append(src, d)
+        }
+    }
+    return src
+}
+
+func contain(src []int, dst int) bool {
+    for _, s := range src {
+        if s == dst {
+            return true
+        }
+    }
+    return false
+}
+
+type huList struct {
+    combin []*combinat
+}
+
+type combinat struct {
+    tp         int   // 1是将，2是顺子，3是克子
+    values     []int // 值
+    haslaizi   bool
+    laizitobe  []int
+    laiziIndex []int
+}
+
+func combination(list, laizi []int) []*huList {
+    comb := make([]*huList, 0)
+    findedJ := make([]int, 0)
+    for index, value := range list {
+        if value == 0 {
+            continue
+        }
+        if exist(value, findedJ) {
+            continue
+        }
+        findedJ = append(findedJ, value)
+        cl := make([]int, len(list))
+        copy(cl, list)
+        cl = append(cl[:index], cl[index+1:]...)
+        hus := find(value, cl, laizi)
+        if len(hus) != 0 {
+            comb = append(comb, hus...)
+        }
+    }
+    return comb
+}
+
+func find(dst int, src, laizi []int) []*huList {
+    possibleHu := new(huList)
+    possibleHus := make([]*huList, 0)
+    src = append(src, laizi...)
+    index, j := findj(dst, src)
+    if !j {
+        return make([]*huList, 0)
+    }
+    jconmb := &amp;combinat{
+        tp:         1,
+        values:     []int{dst, src[index]},
+        haslaizi:   src[index] == 0,
+        laizitobe:  []int{dst},
+        laiziIndex: []int{1},
+    }
+    possibleHu.combin = append(possibleHu.combin, jconmb)
+    src = append(src[:index], src[index+1:]...)
+    possibleHus = find0(src, possibleHu, possibleHus)
+    return possibleHus
+}
+
+func find0(src []int, hu *huList, hus []*huList) []*huList {
+    comb3 := findComb3(src)
+    for _, c := range comb3 {
+        cpHu := new(huList)
+        cpSrc := make([]int, len(src))
+        copy(cpSrc, src)
+        cpHu.combin = hu.combin
+        cpSrc, cpHu = removeComb(cpSrc, c, cpHu)
+        if len(cpSrc) == 0 {
+            if !isexistHu(hus, cpHu) {
+                hus = append(hus, cpHu)
+            }
+            break
+        }
+        hus = find0(cpSrc, cpHu, hus)
+    }
+    return hus
+}
+
+func isexistHu(hus []*huList, srcHu *huList) bool {
+    for _, hu := range hus {
+        indexs := make([]int, 0)
+        for _, comb := range hu.combin {
+            for k, srcComb := range srcHu.combin {
+                if exist(k, indexs) {
+                    continue
+                }
+                if isexistComb(comb, srcComb) {
+                    indexs = append(indexs, k)
+                    break
+                }
+            }
+        }
+        if len(indexs) == len(srcHu.combin) {
+            return true
+        }
+    }
+    return false
+}
+
+func isexistComb(dstComb, srcComb *combinat) bool {
+    if len(dstComb.values) == len(srcComb.values) &amp;&amp; dstComb.tp == srcComb.tp {
+        for i := 0; i &lt; len(dstComb.values); i++ {
+            if dstComb.values[i] != srcComb.values[i] {
+                return false
+            }
+        }
+        return true
+    }
+    return false
+}
+
+func removeComb(src []int, comb *combinat, hu *huList) ([]int, *huList) {
+    hu.combin = append(hu.combin, comb)
+    for _, c := range comb.values {
+        for index, s := range src {
+            if s == c {
+                src = append(src[:index], src[index+1:]...)
+                break
+            }
+        }
+    }
+    return src, hu
+}
+
+func findComb3(src []int) []*combinat {
+    comb3 := make([]*combinat, 0)
+    comb3 = append(comb3, findk(src)...)
+    comb3 = append(comb3, finds(src)...)
+    return comb3
+}
+
+func findj(dst int, src []int) (int, bool) {
+    for k, v := range src {
+        if v == dst || v == 0 {
+            return k, true
+        }
+    }
+    return 0, false
+}
+
+func findk(src []int) []*combinat {
+    possibleKe := make([]*combinat, 0)
+    findedKe := make([]int, 0)
+
+    for _, v := range src {
+        if exist(v, findedKe) {
+            continue
+        }
+        findedKe = append(findedKe, v)
+        knum := 0
+        laizi := 0
+        for _, vv := range src {
+            if v == vv {
+                knum++
+            }
+            if v == 0 {
+                laizi++
+            }
+        }
+        if knum == 3 {
+            possibleKe = append(possibleKe, &amp;combinat{
+                tp:       3,
+                values:   []int{v, v, v},
+                haslaizi: false,
+            })
+        }
+        if knum == 2 &amp;&amp; laizi &gt;= 1 {
+            possibleKe = append(possibleKe, &amp;combinat{
+                tp:         3,
+                values:     []int{v, v, 0},
+                haslaizi:   true,
+                laizitobe:  []int{v},
+                laiziIndex: []int{2},
+            })
+        }
+        if knum == 1 &amp;&amp; laizi &gt;= 2 {
+            possibleKe = append(possibleKe, &amp;combinat{
+                tp:         3,
+                values:     []int{v, 0, 0},
+                haslaizi:   true,
+                laizitobe:  []int{v, v},
+                laiziIndex: []int{1, 2},
+            })
+        }
+    }
+    return possibleKe
+}
+
+func finds(src []int) []*combinat {
+    possibleShun := make([]*combinat, 0)
+    findedShun := make([]int, 0)
+    laizinum := 0
+    for _, v := range src {
+        if v == 0 {
+            laizinum++
+        }
+    }
+    for _, v := range src {
+        if v == 0 {
+            continue
+        }
+        s, f := findRs(v, src, laizinum)
+        if f {
+            if exist(s.values[0], findedShun) {
+                continue
+            }
+            findedShun = append(findedShun, s.values[0])
+            possibleShun = append(possibleShun, s)
+        }
+        s, f = findZs(v, src, laizinum)
+        if f {
+            if exist(s.values[0], findedShun) {
+                continue
+            }
+            findedShun = append(findedShun, s.values[0])
+            possibleShun = append(possibleShun, s)
+        }
+        s, f = findLs(v, src, laizinum)
+        if f {
+            if exist(s.values[0], findedShun) {
+                continue
+            }
+            findedShun = append(findedShun, s.values[0])
+            possibleShun = append(possibleShun, s)
+        }
+    }
+    return possibleShun
+}
+
+func findRs(r int, src []int, laizinum int) (*combinat, bool) {
+    if r%10 &lt; 3 || r%10 &gt; 9 {
+        return nil, false
+    }
+    l := r - 2
+    z := r - 1
+    lnl, znl := false, false
+    if !exist(l, src) {
+        lnl = true
+    }
+    if !exist(z, src) {
+        znl = true
+    }
+    if !lnl &amp;&amp; !znl {
+        return &amp;combinat{
+            tp:       2,
+            values:   []int{l, z, r},
+            haslaizi: false,
+        }, true
+    }
+    if lnl &amp;&amp; !znl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{0, z, r},
+            haslaizi:   true,
+            laizitobe:  []int{l},
+            laiziIndex: []int{0},
+        }, true
+    }
+    if !lnl &amp;&amp; znl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{l, 0, r},
+            haslaizi:   true,
+            laizitobe:  []int{z},
+            laiziIndex: []int{1},
+        }, true
+    }
+    if lnl &amp;&amp; znl &amp;&amp; laizinum &gt;= 2 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{0, 0, r},
+            haslaizi:   true,
+            laizitobe:  []int{l, z},
+            laiziIndex: []int{0, 1},
+        }, true
+    }
+    return nil, false
+}
+
+func findLs(l int, src []int, laizinum int) (*combinat, bool) {
+    if l%10 &lt; 1 || l%10 &gt; 7 {
+        return nil, false
+    }
+    z := l + 1
+    r := l + 2
+    znl, rnl := false, false
+    if !exist(z, src) {
+        znl = true
+    }
+    if !exist(r, src) {
+        rnl = true
+    }
+    if !znl &amp;&amp; !rnl {
+        return &amp;combinat{
+            tp:       2,
+            values:   []int{l, z, r},
+            haslaizi: false,
+        }, true
+    }
+    if znl &amp;&amp; !rnl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{l, 0, r},
+            haslaizi:   true,
+            laizitobe:  []int{z},
+            laiziIndex: []int{1},
+        }, true
+    }
+    if !znl &amp;&amp; rnl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{l, z, 0},
+            haslaizi:   true,
+            laizitobe:  []int{r},
+            laiziIndex: []int{2},
+        }, true
+    }
+    if znl &amp;&amp; rnl &amp;&amp; laizinum &gt;= 2 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{l, 0, 0},
+            haslaizi:   true,
+            laizitobe:  []int{z, r},
+            laiziIndex: []int{1, 2},
+        }, true
+    }
+    return nil, false
+}
+
+func findZs(z int, src []int, laizinum int) (*combinat, bool) {
+    if z%10 &lt; 2 || z%10 &gt; 8 {
+        return nil, false
+    }
+    l := z - 1
+    r := z + 1
+    lnl, rnl := false, false
+    if !exist(l, src) {
+        lnl = true
+    }
+    if !exist(r, src) {
+        rnl = true
+    }
+    if !lnl &amp;&amp; !rnl {
+        return &amp;combinat{
+            tp:       2,
+            values:   []int{l, z, r},
+            haslaizi: false,
+        }, true
+    }
+    if lnl &amp;&amp; !rnl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{0, z, r},
+            haslaizi:   true,
+            laizitobe:  []int{l},
+            laiziIndex: []int{0},
+        }, true
+    }
+    if !lnl &amp;&amp; rnl &amp;&amp; laizinum &gt;= 1 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{l, z, 0},
+            haslaizi:   true,
+            laizitobe:  []int{r},
+            laiziIndex: []int{2},
+        }, true
+    }
+    if lnl &amp;&amp; rnl &amp;&amp; laizinum &gt;= 2 {
+        return &amp;combinat{
+            tp:         2,
+            values:     []int{0, z, 0},
+            haslaizi:   true,
+            laizitobe:  []int{l, r},
+            laiziIndex: []int{0, 2},
+        }, true
+    }
+    return nil, false
+}
+
+func exist(dst int, src []int) bool {
+    for _, v := range src {
+        if v == dst {
+            return true
+        }
+    }
+    return false
+}
+
+</code></pre>
+
+
+    
+
+    
+
+
+</article>
+
+
+
+        </div>
+
+        <aside class="col-12 col-lg-3 ml-auto blog-sidebar">
+    
+        
+
+
+<section>
+    <h4>Recent Posts</h4>
+    <ol class="list-unstyled">
+        
+        <li>
+            <a href="/bfs/">广度优先搜索</a>
+        </li>
+        
+        <li>
+            <a href="/redis/cluster/">redis集群学习</a>
+        </li>
+        
+        <li>
+            <a href="/tcp/sync/">tcp异步</a>
+        </li>
+        
+        <li>
+            <a href="/tcp%E9%95%BF%E8%BF%9E%E6%8E%A5%E5%8E%8B%E6%B5%8B/">tcp长连接压测遇到的问题</a>
+        </li>
+        
+        <li>
+            <a href="/colly/">colly源码包分析</a>
+        </li>
+        
+    </ol>
+</section>
+
+    
+    
+        <section>
+    
+        
+    
+        
+        <h4>Tags</h4>
+        <p>
+            
+            <a class="badge badge-primary" href="/tags/aes">aes</a>
+            
+            <a class="badge badge-primary" href="/tags/async">async</a>
+            
+            <a class="badge badge-primary" href="/tags/bug">bug</a>
+            
+            <a class="badge badge-primary" href="/tags/cluster">cluster</a>
+            
+            <a class="badge badge-primary" href="/tags/db">db</a>
+            
+            <a class="badge badge-primary" href="/tags/git">git</a>
+            
+            <a class="badge badge-primary" href="/tags/http">http</a>
+            
+            <a class="badge badge-primary" href="/tags/markdown">markdown</a>
+            
+            <a class="badge badge-primary" href="/tags/redis">redis</a>
+            
+            <a class="badge badge-primary" href="/tags/ssh">ssh</a>
+            
+            <a class="badge badge-primary" href="/tags/submodule">submodule</a>
+            
+            <a class="badge badge-primary" href="/tags/tcp">tcp</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5">一对一连接</a>
+            
+            <a class="badge badge-primary" href="/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86">依赖管理</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8A%A0%E5%AF%86">加密</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%8D%A0%E4%BD%8D%E7%AC%A6">占位符</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%AD%A6%E4%B9%A0">学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%B9%B2%E8%B4%A7">干货</a>
+            
+            <a class="badge badge-primary" href="/tags/%E5%BC%82%E6%AD%A5">异步</a>
+            
+            <a class="badge badge-primary" href="/tags/%E6%A0%87%E5%87%86%E5%8C%85%E5%AD%A6%E4%B9%A0">标准包学习</a>
+            
+            <a class="badge badge-primary" href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>
+            
+            <a class="badge badge-primary" href="/tags/%E7%AE%97%E6%B3%95">算法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%AF%AD%E6%B3%95">语法</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%B5%84%E6%96%99">资料</a>
+            
+            <a class="badge badge-primary" href="/tags/%E8%BF%9B%E5%88%B6">进制</a>
+            
+            <a class="badge badge-primary" href="/tags/%E9%80%92%E5%BD%92">递归</a>
+            
+        </p>
+        
+    
+</section>
+    
+</aside>
+
+      </div>
+    </div>
+    
+
+    
+      
+
+
+
+
+
+
+<footer class="blog-footer w-100">
+    <nav class="navbar navbar-light bg-light">
+        <p class="w-100 text-center">Hugo template made with ❤ by <a href="https://github.com/Xzya">Xzya</a>, inspired by <a href="https://github.com/alanorth/hugo-theme-bootstrap4-blog">hugo-theme-bootstrap4-blog</a></p>
+        <p class="w-100 text-center"><a href="#">Back to top</a></p>
+    </nav>
+</footer>
+
+    
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>

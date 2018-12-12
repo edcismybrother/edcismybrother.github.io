@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>递归 on 皮智文的小宝库</title>
+    <link>http://edcismybrother.github.io/tags/%E9%80%92%E5%BD%92/</link>
+    <description>Recent content in 递归 on 皮智文的小宝库</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>utf-8</language>
+    <lastBuildDate>Wed, 12 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://edcismybrother.github.io/tags/%E9%80%92%E5%BD%92/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>广度优先搜索</title>
+      <link>http://edcismybrother.github.io/bfs/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://edcismybrother.github.io/bfs/</guid>
+      <description>麻将胡牌算法（包括查听，查胡）
+package main import ( &amp;quot;fmt&amp;quot; ) func main() { list := []int{11, 12, 13, 14, 14, 15, 16, 12} // lists := combination(list, []int{}) // for k, l := range lists { // fmt.Printf(&amp;quot;组合:%v===&amp;quot;, k) // for _, c := range l.combin { // fmt.Printf(&amp;quot;类型：%v 值：%v;&amp;quot;, c.tp, c.values) // } // fmt.Println() // } m := outTS(list) for k, v := range m { fmt.Printf(&amp;quot;打出:%v,可以胡%v\n&amp;quot;, k, v) } } func outTS(list []int) map[int][]int { var ts = make(map[int][]int, 0) out := make([]int, 0) if len(list)%3 !</description>
+    </item>
+    
+  </channel>
+</rss>
